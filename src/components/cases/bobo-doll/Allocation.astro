@@ -1,0 +1,74 @@
+---
+// Unit chart: one dot per child (72 in total), showing how the children were split.
+// Dot colour = sex of the child. Groups of six share the same model condition.
+const GIRL = '#2F6FB0';
+const BOY = '#C8752B';
+const conditions = [
+  {
+    name: 'Aggressive model', n: 24,
+    cells: [
+      { who: 'Girls', model: 'female model', n: 6, c: GIRL },
+      { who: 'Girls', model: 'male model', n: 6, c: GIRL },
+      { who: 'Boys', model: 'female model', n: 6, c: BOY },
+      { who: 'Boys', model: 'male model', n: 6, c: BOY },
+    ],
+  },
+  {
+    name: 'Calm (non-aggressive) model', n: 24,
+    cells: [
+      { who: 'Girls', model: 'female model', n: 6, c: GIRL },
+      { who: 'Girls', model: 'male model', n: 6, c: GIRL },
+      { who: 'Boys', model: 'female model', n: 6, c: BOY },
+      { who: 'Boys', model: 'male model', n: 6, c: BOY },
+    ],
+  },
+  {
+    name: 'No model (control)', n: 24,
+    cells: [
+      { who: 'Girls', model: 'saw no model', n: 12, c: GIRL },
+      { who: 'Boys', model: 'saw no model', n: 12, c: BOY },
+    ],
+  },
+];
+---
+<figure class="chart alloc">
+  <p class="chart__title">How the 72 children were divided</p>
+  <p class="chart__sub">Each dot is one child. Each small cluster is one of the nine groups.</p>
+  <ul class="chart__legend">
+    <li><span class="swatch" style={`background:${GIRL};border-radius:50%`} aria-hidden="true" />Girl (36 in total)</li>
+    <li><span class="swatch" style={`background:${BOY};border-radius:50%`} aria-hidden="true" />Boy (36 in total)</li>
+  </ul>
+  <div class="alloc__grid">
+    {conditions.map((cond) => (
+      <section class="alloc__cond">
+        <h4>{cond.name} <span>{cond.n} children</span></h4>
+        <div class:list={['alloc__cells', { 'alloc__cells--two': cond.cells.length === 2 }]}>
+          {cond.cells.map((cell) => (
+            <div class="alloc__cell">
+              <div class="alloc__dots" role="img" aria-label={`${cell.n} ${cell.who.toLowerCase()}, ${cell.model}`}>
+                {Array.from({ length: cell.n }).map(() => <span style={`background:${cell.c}`} />)}
+              </div>
+              <p>{cell.n} {cell.who.toLowerCase()}<br /><small>{cell.model}</small></p>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+  <p class="chart__foot">Source: Bandura, Ross and Ross (1961), p. 576. Eight experimental groups of six children, plus a control group of 24.</p>
+</figure>
+
+<style>
+  .alloc__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .alloc__cond { border: 1px solid var(--line-soft); border-radius: var(--radius-s); padding: 0.7rem 0.7rem 0.4rem; }
+  .alloc__cond h4 { margin: 0 0 0.6rem; font-size: 0.95rem; line-height: 1.3; }
+  .alloc__cond h4 span { display: block; font-weight: 400; color: var(--ink-soft); font-size: 0.88rem; }
+  .alloc__cells { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 0.5rem; }
+  .alloc__cell p { margin: 0.25rem 0 0; font-size: 0.82rem; line-height: 1.3; }
+  .alloc__cell small { color: var(--ink-soft); font-size: 0.95em; }
+  .alloc__dots { display: grid; grid-template-columns: repeat(3, 12px); gap: 4px; }
+  .alloc__cells--two .alloc__dots { grid-template-columns: repeat(4, 12px); }
+  .alloc__dots span { width: 12px; height: 12px; border-radius: 50%; display: block; }
+  @media (max-width: 760px) { .alloc__grid { grid-template-columns: 1fr; } .alloc__cells { grid-template-columns: repeat(4, auto); justify-content: start; gap: 0.6rem 1.2rem; } .alloc__cells--two { grid-template-columns: repeat(2, auto); } }
+  @media (max-width: 420px) { .alloc__cells { grid-template-columns: 1fr 1fr; } }
+</style>

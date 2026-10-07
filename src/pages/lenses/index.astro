@@ -1,0 +1,65 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LensRosette from '../../components/LensRosette.astro';
+import { LENSES, LENS_PRIMER } from '../../data/course';
+import { pageUrl } from '../../lib/site';
+
+const lensPages = await getCollection('pages', (p) => Boolean(p.data.lens));
+const caseTitles = new Map<string, string>();
+for (const p of lensPages) {
+  const id = p.id.split('/')[0];
+  if (!caseTitles.has(id)) caseTitles.set(id, (await getEntry('cases', id))?.data.title ?? id);
+}
+---
+<BaseLayout title="The nine lenses" current="lenses" description="A beginner's guide to the nine perspectives in Paradigms and Perspectives in Psychology.">
+  <main id="main" class="page lenses">
+    <header class="lenses__head">
+      <div>
+        <h1>The nine lenses</h1>
+        <p class="lede">Your course outline lists nine perspectives. Each one is a school of thought with its own idea of what a person is, what counts as evidence and what questions are worth asking. Read this page first if the names are new to you. Each case guide then applies every lens to one study.</p>
+        <p class="muted">A perspective is a broad way of looking at people. A paradigm is a shared set of assumptions and methods that a research community takes for granted, a term made famous by the historian of science Thomas Kuhn in 1962. In everyday course use the two words overlap.</p>
+      </div>
+      <LensRosette size="small" animate={false} />
+    </header>
+
+    <div class="lens-list">
+      {LENSES.map((l) => {
+        const p = LENS_PRIMER[l.id];
+        const uses = lensPages.filter((x) => x.data.lens === l.id);
+        return (
+          <section class="lens-card" id={l.id} style={`--lens:${l.color};--lens-tint:${l.tint}`}>
+            <h2><span class="lens-dot" aria-hidden="true" style={`background:${l.color}`} />{l.name}</h2>
+            <p class="lens-card__q">{l.question}</p>
+            <p>{l.focus}</p>
+            <dl>
+              <div><dt>Key names</dt><dd>{p.people}</dd></div>
+              <div><dt>Typical methods</dt><dd>{p.methods}</dd></div>
+              <div><dt>Watch out for</dt><dd>{p.watch}</dd></div>
+            </dl>
+            {uses.length > 0 && (
+              <p class="lens-card__uses">Applied in: {uses.map((u, i) => (<>{i > 0 && ', '}<a href={pageUrl(u)}>{caseTitles.get(u.id.split('/')[0])}</a></>))}</p>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .lenses { padding-top: 2.5rem; }
+  .lenses__head { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2rem; align-items: center; margin-bottom: 2rem; }
+  .lenses__head .muted { font-size: 0.97rem; max-width: 62ch; }
+  @media (max-width: 900px) { .lenses__head { grid-template-columns: 1fr; } }
+  .lens-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 1rem; }
+  .lens-card { background: var(--surface); border: 1px solid var(--line); border-top: 5px solid var(--lens); border-radius: var(--radius); padding: 1.2rem 1.3rem 1rem; scroll-margin-top: 5rem; }
+  .lens-card h2 { margin: 0 0 0.3rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.6rem; }
+  .lens-card__q { font-family: var(--font-head); color: var(--lens); font-size: 1.1rem; line-height: 1.4; margin: 0 0 0.7rem; }
+  .lens-card p { font-size: 1rem; }
+  .lens-card dl { margin: 0.8rem 0 0; display: grid; gap: 0.55rem; font-size: 0.95rem; }
+  .lens-card dt { font-weight: 700; color: var(--ink); }
+  .lens-card dd { margin: 0; color: var(--ink-soft); }
+  .lens-card__uses { margin: 0.9rem 0 0; padding-top: 0.7rem; border-top: 1px solid var(--line-soft); font-size: 0.95rem; }
+  .lens-card:target { box-shadow: 0 0 0 3px var(--lens-tint), var(--shadow); }
+</style>

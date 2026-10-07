@@ -1,0 +1,20 @@
+{
+  "name": "nine-lenses",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Case-study guides for Paradigms and Perspectives in Psychology (MSc).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "node scripts/check-site.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "4.3.14",
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.2.0",
+    "@fontsource-variable/literata": "^5.2.0",
+    "astro": "5.18.2",
+    "unist-util-visit": "^5.0.0"
+  }
+}

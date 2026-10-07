@@ -1,0 +1,33 @@
+---
+// Lists the pages under a hub (the nine lens pages or the seven stakeholder pages).
+import { getCollection } from 'astro:content';
+import { lensById } from '../data/course';
+import { pageUrl } from '../lib/site';
+
+interface Props { caseId: string; parent: 'lenses' | 'stakeholders' }
+const { caseId, parent } = Astro.props;
+const prefix = `${caseId}/${parent}/`;
+const items = (await getCollection('pages', (p) => p.id.startsWith(prefix))).sort((a, b) => a.data.order - b.data.order);
+---
+<ul class="subgrid">
+  {items.map((p) => {
+    const lens = p.data.lens ? lensById(p.data.lens) : undefined;
+    return (
+      <li style={lens ? `--lens:${lens.color};--lens-tint:${lens.tint}` : undefined}>
+        <a href={pageUrl(p)}>
+          <strong>{lens && <span class="lens-dot" style={`background:${lens.color}`} aria-hidden="true" />}{p.data.nav}</strong>
+          <span>{p.data.summary}</span>
+        </a>
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .subgrid { list-style: none; padding: 0; margin: 1.5rem 0 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 0.7rem; }
+  .subgrid li { margin: 0; }
+  .subgrid a { display: block; height: 100%; padding: 0.9rem 1rem; background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--lens, var(--petrol)); border-radius: var(--radius); color: var(--ink); text-decoration: none; }
+  .subgrid a:hover { border-color: var(--lens, var(--petrol)); }
+  .subgrid strong { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-head); font-size: 1.1rem; margin-bottom: 0.3rem; }
+  .subgrid span:not(.lens-dot) { display: block; font-size: 0.93rem; color: var(--ink-soft); line-height: 1.45; }
+</style>

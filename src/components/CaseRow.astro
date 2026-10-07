@@ -1,0 +1,35 @@
+---
+import { url, type CaseEntry } from '../lib/site';
+interface Props { c: CaseEntry }
+const { c } = Astro.props;
+const d = c.data;
+---
+<li class="case-row">
+  <a href={url(`cases/${c.id}/`)}>
+    {d.image && <img src={url(d.image)} alt="" width="480" height="320" loading="lazy" />}
+    <div class="case-row__text">
+      <p class="case-row__meta">{d.year}, {d.theme}. {d.hock} in Hock</p>
+      <h3>{d.title}</h3>
+      <p class="case-row__q">{d.question}</p>
+      <p class="case-row__cite">{d.authors}</p>
+      {d.status === 'draft' && <p class="case-row__status">Draft: under review</p>}
+    </div>
+  </a>
+</li>
+
+<style>
+  .case-row { margin: 0; }
+  .case-row a {
+    display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 1.5rem; align-items: center;
+    padding: 0.8rem; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line);
+    text-decoration: none; color: var(--ink);
+  }
+  .case-row a:hover { border-color: var(--petrol); }
+  .case-row img { width: 100%; height: auto; border-radius: var(--radius-s); display: block; aspect-ratio: 3 / 2; object-fit: cover; }
+  .case-row h3 { margin: 0.1rem 0 0.4rem; font-size: var(--step-2); }
+  .case-row__meta { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+  .case-row__q { margin: 0 0 0.5rem; font-size: 1.1rem; }
+  .case-row__cite { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
+  .case-row__status { margin: 0.5rem 0 0; color: var(--invented); font-weight: 700; font-size: 0.9rem; }
+  @media (max-width: 700px) { .case-row a { grid-template-columns: 1fr; gap: 0.8rem; } }
+</style>

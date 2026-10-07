@@ -1,0 +1,72 @@
+---
+// Nine translucent lenses arranged around one shared centre: the study.
+// Where all nine overlap, the colour is darkest. Each lens links to its primer entry.
+import { LENSES } from '../data/course';
+import { url } from '../lib/site';
+
+interface Props { size?: 'hero' | 'small'; animate?: boolean }
+const { size = 'hero', animate = true } = Astro.props;
+
+const C = 300;          // centre of the 600 x 600 canvas
+const R = 92;           // distance of each lens centre from the middle
+const r = 104;          // lens radius (larger than R, so every lens covers the centre)
+const L = R + r + 30;   // label radius
+const items = LENSES.map((lens, i) => {
+  const a = (-90 + i * 40) * (Math.PI / 180);
+  const cx = C + R * Math.cos(a);
+  const cy = C + R * Math.sin(a);
+  const lx = C + L * Math.cos(a);
+  const ly = C + L * Math.sin(a);
+  const anchor = Math.abs(Math.cos(a)) < 0.2 ? 'middle' : Math.cos(a) > 0 ? 'start' : 'end';
+  return { lens, cx, cy, lx, ly, anchor, dx: cx - C, dy: cy - C, i };
+});
+---
+<figure class:list={['rosette', `rosette--${size}`, { 'rosette--animate': animate }]}>
+  <svg viewBox="-95 40 790 500" role="img" aria-labelledby="rosette-title">
+    <title id="rosette-title">Nine overlapping circles, one for each perspective, all covering a shared centre that stands for the study.</title>
+    <g class="rosette__lenses">
+      {items.map(({ lens, cx, cy, dx, dy, i }) => (
+        <a href={url(`lenses/#${lens.id}`)} class="rosette__lens" aria-label={`${lens.name} lens`} style={`--dx:${-dx}px;--dy:${-dy}px;--i:${i}`}>
+          <circle cx={cx} cy={cy} r={r} fill={lens.color} />
+        </a>
+      ))}
+    </g>
+    <circle cx={C} cy={C} r="7" fill="#fff" class="rosette__core" />
+    <g class="rosette__labels" aria-hidden="true">
+      {items.map(({ lens, lx, ly, anchor }) => (
+        <text x={lx} y={ly + 6} text-anchor={anchor} fill={lens.color}>{lens.name}</text>
+      ))}
+    </g>
+  </svg>
+  <ul class="rosette__legend">
+    {LENSES.map((lens) => (
+      <li><a href={url(`lenses/#${lens.id}`)}><span class="lens-dot" style={`background:${lens.color}`} aria-hidden="true" />{lens.name}</a></li>
+    ))}
+  </ul>
+</figure>
+
+<style>
+  .rosette { margin: 0; }
+  .rosette svg { display: block; width: 100%; max-width: 620px; margin: 0 auto; overflow: visible; }
+  .rosette__lens circle { opacity: 0.27; mix-blend-mode: multiply; transition: opacity 160ms ease; }
+  .rosette__lens:hover circle, .rosette__lens:focus-visible circle { opacity: 0.62; }
+  .rosette__lens:focus-visible { outline: none; }
+  .rosette__labels text { font-family: var(--font-head); font-weight: 600; font-size: 19px; }
+  .rosette__legend { display: none; list-style: none; padding: 0; margin: 1rem 0 0; grid-template-columns: 1fr 1fr 1fr; gap: 0.3rem 0.8rem; font-size: 0.95rem; }
+  .rosette__legend li { margin: 0; }
+  .rosette__legend a { color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 0.45rem; padding: 0.2rem 0; }
+  .rosette__legend .lens-dot { width: 0.75rem; height: 0.75rem; }
+  @media (max-width: 700px) {
+    .rosette__labels { display: none; }
+    .rosette__legend { display: grid; }
+    .rosette svg { max-width: 300px; }
+  }
+  @media (max-width: 400px) { .rosette__legend { grid-template-columns: 1fr 1fr; } }
+
+  /* One orchestrated moment: the lenses open out from the centre on first load. */
+  .rosette--animate .rosette__lens { animation: lens-open 900ms cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 55ms + 150ms); }
+  .rosette--animate .rosette__labels { animation: labels-in 500ms ease 900ms both; }
+  @keyframes lens-open { from { transform: translate(var(--dx), var(--dy)); opacity: 0.2; } to { transform: translate(0, 0); opacity: 1; } }
+  @keyframes labels-in { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .rosette--animate .rosette__lens, .rosette--animate .rosette__labels { animation: none; } }
+</style>

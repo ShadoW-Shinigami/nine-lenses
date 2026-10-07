@@ -1,0 +1,122 @@
+---
+// Grouped column chart drawn in HTML/CSS so that labels stay readable at phone widths.
+// Every value is also available in a table view underneath.
+interface Series { name: string; color: string }
+interface Group { label: string; sub?: string; values: (number | null)[] }
+interface Props {
+  title: string;
+  sub?: string;
+  series: Series[];
+  groups: Group[];
+  max: number;
+  ticks?: number[];
+  unit?: string;          // short unit for the tooltip, e.g. "acts"
+  source: string;         // where the numbers come from
+  invented?: boolean;     // true for made-up teaching numbers
+  tableCaption?: string;
+}
+const { title, sub, series, groups, max, ticks = [0, max / 2, max], unit = '', source, invented = false, tableCaption } = Astro.props;
+const decimals = groups.some((g) => g.values.some((v) => v !== null && !Number.isInteger(v))) ? 1 : 0;
+const fmt = (v: number) => v.toFixed(decimals);
+const fmtTick = (v: number) => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+---
+<figure class="chart colchart">
+  <p class="chart__title">{title}</p>
+  {sub && <p class="chart__sub">{sub}</p>}
+  {invented && <p class="chart__invented">Invented teaching numbers, not research data</p>}
+  {series.length > 1 && (
+    <ul class="chart__legend">
+      {series.map((s) => <li><span class="swatch" style={`background:${s.color}`} aria-hidden="true" />{s.name}</li>)}
+    </ul>
+  )}
+  <div class="colchart__plot" aria-hidden="true" style={`--n:${groups.length}`}>
+    <div class="colchart__grid">
+      {ticks.map((t) => <span style={`bottom:${(t / max) * 100}%`}><em>{fmtTick(t)}</em></span>)}
+    </div>
+    {groups.map((g) => (
+      <div class="colchart__group">
+        <div class="colchart__bars">
+          {g.values.map((v, i) => (
+            <span class="colchart__bar" style={`--h:${((v ?? 0) / max) * 100}%;--c:${series[i].color}`} title={`${g.label}${g.sub ? ' ' + g.sub : ''}, ${series[i].name}: ${v ?? 'n/a'} ${unit}`}>
+              <b>{v === null ? '' : fmt(v)}</b>
+            </span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="colchart__labels" aria-hidden="true" style={`--n:${groups.length}`}>
+    {groups.map((g) => <span>{g.label}{g.sub && <small>{g.sub}</small>}</span>)}
+  </div>
+  <div class="rowchart" aria-hidden="true">
+    {groups.map((g) => (
+      <div class="rowchart__group">
+        <p class="rowchart__label">{g.label}{g.sub && <> <span>{g.sub}</span></>}</p>
+        {g.values.map((v, i) => (
+          <div class="rowchart__row">
+            <span class="rowchart__name">{series[i].name}</span>
+            <span class="rowchart__track"><span class="rowchart__bar" style={`--w:${((v ?? 0) / max) * 100}%;--c:${series[i].color}`} /><b>{v === null ? 'n/a' : fmt(v)}</b></span>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+  <p class="chart__foot">{source}</p>
+  <details>
+    <summary>Show these numbers as a table</summary>
+    <div class="stack-table">
+      <table>
+        {tableCaption && <caption class="visually-hidden">{tableCaption}</caption>}
+        <thead><tr><th>Condition</th>{series.map((s) => <th>{s.name}</th>)}</tr></thead>
+        <tbody>
+          {groups.map((g) => (
+            <tr>
+              <td data-label="Condition">{g.label}{g.sub ? ` ${g.sub}` : ''}</td>
+              {g.values.map((v, i) => <td data-label={series[i].name}>{v === null ? 'n/a' : fmt(v)}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<style>
+  .chart__invented { display: inline-block; margin: 0 0 0.6rem; padding: 0.15rem 0.6rem; border-radius: 999px; background: #F1EAF6; color: var(--invented); font-size: 0.82rem; font-weight: 700; }
+  .colchart__plot {
+    position: relative; height: 230px; margin: 1.6rem 0 0 2rem;
+    display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    border-bottom: 1px solid var(--ink-soft);
+  }
+  .colchart__grid { position: absolute; inset: 0; pointer-events: none; }
+  .colchart__grid span { position: absolute; left: 0; right: 0; border-top: 1px solid var(--line-soft); }
+  .colchart__grid em { position: absolute; right: calc(100% + 0.4rem); transform: translateY(-50%); font-style: normal; font-size: 0.78rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .colchart__group { position: relative; display: flex; justify-content: center; align-items: flex-end; }
+  .colchart__bars { display: flex; align-items: flex-end; gap: 2px; height: 100%; }
+  .colchart__bar {
+    position: relative; width: clamp(12px, 3.2vw, 24px); height: var(--h);
+    background: var(--c); border-radius: 4px 4px 0 0; min-height: 1px;
+  }
+  .colchart__bar b {
+    position: absolute; bottom: calc(100% + 3px); left: 50%; transform: translateX(-50%);
+    font-size: 0.74rem; font-weight: 700; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums;
+  }
+  .colchart__labels {
+    display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); margin: 0.5rem 0 0 2rem;
+    font-size: 0.82rem; line-height: 1.3; text-align: center; color: var(--ink);
+  }
+  .colchart__labels span { padding: 0 0.15rem; }
+  .colchart__labels small { display: block; color: var(--ink-soft); font-size: 0.95em; }
+  .rowchart { display: none; }
+  @media (max-width: 600px) {
+    .colchart__plot, .colchart__labels { display: none; }
+    .rowchart { display: grid; gap: 0.85rem; margin-top: 0.4rem; }
+    .rowchart__label { margin: 0 0 0.25rem; font-weight: 700; font-size: 0.9rem; }
+    .rowchart__label span { font-weight: 400; color: var(--ink-soft); }
+    .rowchart__row { display: grid; grid-template-columns: 3.2rem 1fr; align-items: center; gap: 0.4rem; margin: 0 0 3px; }
+    .rowchart__name { font-size: 0.8rem; color: var(--ink-soft); }
+    .rowchart__track { display: flex; align-items: center; gap: 0.35rem; min-width: 0; }
+    .rowchart__bar { display: block; height: 14px; width: calc(var(--w) * 0.82); min-width: 2px; flex: none; background: var(--c); border-radius: 0 4px 4px 0; }
+    .rowchart__track b { font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+  }
+</style>

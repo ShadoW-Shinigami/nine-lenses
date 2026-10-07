@@ -1,0 +1,9 @@
+# Private: supplied books, source PDFs, research notes. Never publish.
+_private/
+*.pdf
+
+node_modules/
+dist/
+.astro/
+.DS_Store
+Thumbs.db

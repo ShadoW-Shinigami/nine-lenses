@@ -1,0 +1,46 @@
+---
+// A dated sequence. Items are listed in time order; the year is the axis label.
+// kind tells the reader what sort of event it is (a study, a theory, or a use in practice or policy).
+interface Item { year: string; title: string; text: string; kind: 'study' | 'theory' | 'practice' }
+interface Props { items: Item[]; label: string }
+const { items, label } = Astro.props;
+const kindName = { study: 'Study', theory: 'Theory', practice: 'Practice and policy' };
+---
+<figure class="chart timeline">
+  <p class="chart__title">{label}</p>
+  <ul class="chart__legend">
+    <li><span class="tl-mark tl-mark--study" aria-hidden="true" />Study</li>
+    <li><span class="tl-mark tl-mark--theory" aria-hidden="true" />Theory</li>
+    <li><span class="tl-mark tl-mark--practice" aria-hidden="true" />Practice and policy</li>
+  </ul>
+  <ol class="tl">
+    {items.map((it) => (
+      <li class={`tl__item tl__item--${it.kind}`}>
+        <span class="tl__year">{it.year}</span>
+        <span class={`tl-mark tl-mark--${it.kind}`} aria-hidden="true" />
+        <div class="tl__body">
+          <p class="tl__title"><span class="visually-hidden">{kindName[it.kind]}: </span>{it.title}</p>
+          <p class="tl__text">{it.text}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .tl { list-style: none; padding: 0; margin: 0.6rem 0 0; position: relative; }
+  .tl::before { content: ''; position: absolute; left: calc(5rem - 1px); top: 0.4rem; bottom: 0.4rem; width: 2px; background: var(--line); }
+  .tl__item { display: grid; grid-template-columns: 3.8rem 1.6rem 1fr; align-items: start; gap: 0 0.4rem; margin: 0 0 0.9rem; position: relative; }
+  .tl__year { font-family: var(--font-head); font-weight: 650; font-size: 1rem; color: var(--ink); text-align: right; padding-top: 0.05rem; font-variant-numeric: tabular-nums; }
+  .tl__item > .tl-mark { margin: 0.3rem auto 0; position: relative; z-index: 1; }
+  .tl__title { margin: 0; font-weight: 700; font-size: 0.98rem; line-height: 1.35; }
+  .tl__text { margin: 0.15rem 0 0; font-size: 0.92rem; color: var(--ink-soft); line-height: 1.5; }
+  .tl-mark { display: inline-block; width: 0.85rem; height: 0.85rem; flex: none; box-shadow: 0 0 0 2px var(--surface); }
+  .tl-mark--study { background: var(--petrol); border-radius: 50%; }
+  .tl-mark--theory { background: var(--gold); transform: rotate(45deg); border-radius: 2px; }
+  .tl-mark--practice { background: #fff; border: 2.5px solid var(--ink-soft); border-radius: 3px; }
+  @media (max-width: 480px) {
+    .tl::before { left: calc(4.3rem - 1px); }
+    .tl__item { grid-template-columns: 3.2rem 1.4rem 1fr; }
+  }
+</style>

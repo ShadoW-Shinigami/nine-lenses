@@ -1,0 +1,10 @@
+---
+// Optional detail (often statistics) placed beside the simple explanation.
+// Wide screens: always open in the right margin. Phones: tap to open.
+interface Props { title?: string }
+const { title = 'Statistics note' } = Astro.props;
+---
+<details class="note">
+  <summary>{title}</summary>
+  <div class="note__body"><slot /></div>
+</details>

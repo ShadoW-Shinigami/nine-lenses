@@ -1,0 +1,9 @@
+---
+// Where a textbook account (usually Hock) differs from the original paper.
+interface Props { title?: string }
+const { title = 'Source check' } = Astro.props;
+---
+<aside class="source-check">
+  <p class="source-check__title">{title}</p>
+  <slot />
+</aside>

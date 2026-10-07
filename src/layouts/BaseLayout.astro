@@ -1,0 +1,65 @@
+---
+import '@fontsource-variable/literata/opsz.css';
+import '@fontsource-variable/literata/opsz-italic.css';
+import '@fontsource-variable/atkinson-hyperlegible-next/wght.css';
+import '@fontsource-variable/atkinson-hyperlegible-next/wght-italic.css';
+import '../styles/global.css';
+import Wordmark from '../components/Wordmark.astro';
+import { url } from '../lib/site';
+
+interface Props { title: string; description?: string; current?: 'home' | 'cases' | 'lenses'; image?: string }
+const { title, description = 'Case-study guides for Paradigms and Perspectives in Psychology: each classic study read through nine lenses.', current, image } = Astro.props;
+const fullTitle = title === 'Nine Lenses' ? 'Nine Lenses: case guides for Paradigms and Perspectives in Psychology' : `${title} | Nine Lenses`;
+const ogImage = image ? new URL(url(image), Astro.site).href : undefined;
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="theme-color" content="#F5F7F6" />
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <Wordmark />
+        <nav class="site-nav" aria-label="Main">
+          <a href={url('cases/')} aria-current={current === 'cases' ? 'page' : undefined}>Cases</a>
+          <a href={url('lenses/')} aria-current={current === 'lenses' ? 'page' : undefined}>The nine lenses</a>
+          <a class="hide-sm" href={url('#how')}>How to use</a>
+        </nav>
+      </div>
+    </header>
+    <slot />
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p>Study guides for the MSc course Paradigms and Perspectives in Psychology. They follow the course's Reflective Learning Journey outline, Sections A to F. Section G is your own reflection.</p>
+        <p>Written for learning, not as a substitute for reading the original papers. Each guide lists the sources it checked.</p>
+      </div>
+    </footer>
+    <script is:inline>
+      // Side notes sit open in the margin on wide screens and fold away on small ones.
+      (function () {
+        var mq = window.matchMedia('(min-width: 1320px)');
+        function sync() {
+          document.querySelectorAll('.content details.note').forEach(function (d) {
+            if (mq.matches) d.setAttribute('open', '');
+            else if (!d.dataset.touched) d.removeAttribute('open');
+          });
+        }
+        document.addEventListener('toggle', function (e) {
+          if (e.target.classList && e.target.classList.contains('note') && !mq.matches) e.target.dataset.touched = '1';
+        }, true);
+        mq.addEventListener('change', sync);
+        sync();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+---
+import { SECTIONS, lensById, type SectionId } from '../data/course';
+import { pageUrl, isSubPage, parentId, url, type PageEntry, type CaseEntry } from '../lib/site';
+
+interface Props { caseData: CaseEntry; pages: PageEntry[]; currentId?: string }
+const { caseData, pages, currentId } = Astro.props;
+
+const order: SectionId[] = ['A', 'B', 'C', 'D', 'E', 'F', 'X'];
+const tops = pages.filter((p) => !isSubPage(p));
+const childrenOf = (id: string) => pages.filter((p) => isSubPage(p) && parentId(p) === id);
+const currentParent = currentId && currentId.split('/').length > 2 ? currentId.split('/').slice(0, 2).join('/') : currentId;
+---
+<nav class="case-nav" aria-label={`Contents of ${caseData.data.title}`}>
+  <a class="case-nav__case" href={url(`cases/${caseData.id}/`)} aria-current={currentId === undefined ? 'page' : undefined}>
+    <strong>{caseData.data.title}</strong>
+    <span>Guide overview</span>
+  </a>
+  {order.map((sec) => {
+    const items = tops.filter((p) => p.data.section === sec);
+    if (!items.length) return null;
+    return (
+      <div class="case-nav__group">
+        <p class="case-nav__group-title">
+          <span class:list={['sec-badge', { 'sec-badge--x': sec === 'X' }]} aria-hidden="true">{sec === 'X' ? '+' : sec}</span>
+          {SECTIONS[sec].title}
+        </p>
+        <ol>
+          {items.map((p) => {
+            const kids = childrenOf(p.id);
+            const openKids = kids.length > 0 && currentParent === p.id;
+            return (
+              <li>
+                <a href={pageUrl(p)} aria-current={currentId === p.id ? 'page' : undefined}>{p.data.nav}</a>
+                {openKids && (
+                  <ol class="sub">
+                    {kids.map((k) => {
+                      const lens = k.data.lens ? lensById(k.data.lens) : undefined;
+                      return (
+                        <li>
+                          <a href={pageUrl(k)} aria-current={currentId === k.id ? 'page' : undefined}>
+                            {lens && <span class="dot" style={`background:${lens.color}`} aria-hidden="true" />}
+                            {k.data.nav}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    );
+  })}
+  <div class="case-nav__group">
+    <p class="case-nav__group-title">
+      <span class="sec-badge sec-badge--g" aria-hidden="true">G</span>
+      Your reflection (you write this)
+    </p>
+  </div>
+</nav>

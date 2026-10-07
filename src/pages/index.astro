@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LensRosette from '../components/LensRosette.astro';
+import CaseRow from '../components/CaseRow.astro';
+import { SECTIONS } from '../data/course';
+import { url } from '../lib/site';
+
+const cases = (await getCollection('cases')).filter((c) => c.data.status !== 'planned').sort((a, b) => a.data.order - b.data.order);
+const first = cases[0];
+const steps = (['A', 'B', 'C', 'D', 'E', 'F', 'G'] as const).map((id) => ({ id, ...SECTIONS[id] }));
+---
+<BaseLayout title="Nine Lenses" current="home">
+  <main id="main">
+    <section class="hero page">
+      <div class="hero__text">
+        <h1>Read a classic study through nine lenses</h1>
+        <p class="lede">Study guides for <em>Paradigms and Perspectives in Psychology</em> (MSc, level 600). Each guide starts from zero and explains what the researchers did and why. Then it reads the same study through all nine perspectives in your course outline, so you can see how one piece of research looks different from each side.</p>
+        <div class="hero__actions">
+          {first && <a class="btn btn--primary" href={url(`cases/${first.id}/`)}>Start with {first.data.title.replace(/^The /, 'the ')}</a>}
+          <a class="btn" href={url('lenses/')}>Meet the nine lenses</a>
+        </div>
+      </div>
+      <div class="hero__art">
+        <LensRosette />
+        <p class="hero__caption">Each circle is one perspective. They all cover the centre, the study itself, but each one colours it differently.</p>
+      </div>
+    </section>
+
+    <section class="how page" id="how" aria-labelledby="how-title">
+      <h2 id="how-title">Every guide follows your journal outline</h2>
+      <p class="prose muted">The pages are grouped by the sections of the Reflective Learning Journey. Work through them in order, or jump to the section you are writing.</p>
+      <ol class="steps">
+        {steps.map((s) => (
+          <li class:list={['step', { 'step--yours': s.id === 'G' }]}>
+            <span class:list={['sec-badge', { 'sec-badge--g': s.id === 'G' }]} aria-hidden="true">{s.id}</span>
+            <div>
+              <strong>{s.title}</strong>
+              <p>{s.outline}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="prose muted how__note">Sections C and F go further than the outline asks. The outline says "complete at least three" lenses and "choose two" stakeholders. The guides cover all nine lenses and all seven stakeholders, so you can compare them and choose well.</p>
+    </section>
+
+    <section class="library page" aria-labelledby="lib-title">
+      <div class="library__head">
+        <h2 id="lib-title">Case guides</h2>
+        <a href={url('cases/')}>See all cases</a>
+      </div>
+      <ul class="case-rows">
+        {cases.map((c) => <CaseRow c={c} />)}
+      </ul>
+      <p class="muted">New guides are added one study at a time, after an independent accuracy review.</p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 2rem 3rem; align-items: center;
+    padding-top: 3.5rem; padding-bottom: 3rem;
+  }
+  .hero h1 { font-size: var(--step-5); line-height: 1.04; letter-spacing: -0.025em; margin-bottom: 1.2rem; max-width: 13ch; font-variation-settings: 'opsz' 72; font-weight: 600; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+  .hero__caption { text-align: center; color: var(--ink-soft); font-size: 0.92rem; max-width: 40ch; margin: 0.6rem auto 0; }
+  .btn { display: inline-flex; align-items: center; padding: 0.75rem 1.2rem; border-radius: 999px; border: 1.5px solid var(--ink); color: var(--ink); text-decoration: none; font-weight: 700; }
+  .btn:hover { background: var(--surface); color: var(--ink); }
+  .btn--primary { background: var(--petrol); border-color: var(--petrol); color: #fff; }
+  .btn--primary:hover { background: var(--petrol-deep); color: #fff; }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 2rem; }
+    .hero__art { order: -1; }
+  }
+
+  .how { padding-top: 2.5rem; padding-bottom: 1rem; border-top: 1px solid var(--line); }
+  .how h2 { margin-top: 0; }
+  .steps { list-style: none; padding: 0; margin: 1.6rem 0 1rem; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0; counter-reset: none; }
+  .step { margin: 0; padding: 0 1rem 0 0; display: grid; gap: 0.7rem; align-content: start; position: relative; }
+  .step::before { content: ''; position: absolute; left: 1.9rem; right: 0.4rem; top: 0.85rem; height: 2px; background: var(--line); }
+  .step:last-child::before { display: none; }
+  .step .sec-badge { font-size: 1rem; position: relative; }
+  .step strong { font-family: var(--font-head); font-size: 1.02rem; line-height: 1.25; display: block; margin-bottom: 0.3rem; }
+  .step p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.45; margin: 0; }
+  .step--yours strong { color: var(--petrol); }
+  .how__note { font-size: 0.95rem; }
+  @media (max-width: 1100px) {
+    .steps { grid-template-columns: 1fr; gap: 1rem; }
+    .step { grid-template-columns: auto 1fr; padding: 0; }
+    .step::before { left: 0.84rem; top: 1.9rem; bottom: -1rem; right: auto; width: 2px; height: auto; }
+  }
+
+  .library { padding-top: 2.5rem; border-top: 1px solid var(--line); margin-top: 2.5rem; }
+  .library__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .library__head h2 { margin-top: 0; }
+  .case-rows { list-style: none; padding: 0; margin: 1rem 0 1.5rem; display: grid; gap: 1rem; }
+</style>

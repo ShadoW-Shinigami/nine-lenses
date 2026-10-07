@@ -1,0 +1,21 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import CaseLayout from '../../layouts/CaseLayout.astro';
+import { caseIdOf, getCasePages } from '../../lib/site';
+import { mdxComponents } from '../../components/mdx';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const caseId = caseIdOf(entry);
+const caseData = await getEntry('cases', caseId);
+if (!caseData) throw new Error(`No case data for ${caseId}`);
+const pages = await getCasePages(caseId);
+const { Content } = await render(entry);
+---
+<CaseLayout entry={entry} caseData={caseData} pages={pages}>
+  <Content components={mdxComponents} />
+</CaseLayout>

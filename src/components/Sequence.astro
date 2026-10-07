@@ -1,0 +1,45 @@
+---
+// A real sequence of steps (for example the rooms a child passed through).
+// Each step can carry a thumbnail. The connector between steps means "then".
+import { url } from '../lib/site';
+interface Step { title: string; time?: string; text: string; img?: string; alt?: string }
+interface Props { steps: Step[]; label: string }
+const { steps, label } = Astro.props;
+---
+<ol class="seq" aria-label={label}>
+  {steps.map((s, i) => (
+    <li class="seq__step">
+      {s.img && <img src={url(s.img)} alt={s.alt ?? ''} width="480" height="320" loading="lazy" />}
+      <div class="seq__body">
+        <p class="seq__title"><span class="seq__n" aria-hidden="true">{i + 1}</span>{s.title}</p>
+        {s.time && <p class="seq__time">{s.time}</p>}
+        <p class="seq__text">{s.text}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .seq { list-style: none; padding: 0; margin: 2rem 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem; max-width: calc(var(--measure) + 160px); }
+  .seq__step { position: relative; margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: visible; }
+  .seq__step img { display: block; width: 100%; height: auto; border-radius: var(--radius) var(--radius) 0 0; }
+  .seq__step:not(:last-child)::after {
+    content: ''; position: absolute; top: 28%; right: -1.25rem; width: 0.9rem; height: 0.9rem;
+    border-top: 2.5px solid var(--petrol); border-right: 2.5px solid var(--petrol); transform: rotate(45deg);
+  }
+  .seq__body { padding: 0.8rem 0.9rem 0.9rem; }
+  .seq__title { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; margin: 0 0 0.2rem; line-height: 1.3; }
+  .seq__n { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--petrol); color: #fff; font-size: 0.85rem; flex: none; }
+  .seq__time { margin: 0 0 0.4rem; color: var(--petrol); font-size: 0.88rem; font-weight: 700; }
+  .seq__text { margin: 0; font-size: 0.95rem; line-height: 1.5; }
+  @media (max-width: 760px) {
+    .seq { grid-template-columns: 1fr; gap: 1.5rem; }
+    .seq__step { display: grid; grid-template-columns: 38% 1fr; }
+    .seq__step img { height: 100%; object-fit: cover; border-radius: var(--radius) 0 0 var(--radius); }
+    .seq__step:not(:last-child)::after { top: auto; bottom: -1.15rem; right: auto; left: 50%; transform: translateX(-50%) rotate(135deg); }
+  }
+  @media (max-width: 420px) {
+    .seq__step { grid-template-columns: 1fr; }
+    .seq__step img { border-radius: var(--radius) var(--radius) 0 0; }
+  }
+</style>

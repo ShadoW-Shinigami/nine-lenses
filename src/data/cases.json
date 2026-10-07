@@ -1,0 +1,48 @@
+[
+  {
+    "id": "bobo-doll",
+    "title": "The Bobo doll study",
+    "question": "Will young children copy aggression that they have only watched?",
+    "year": 1961,
+    "authors": "Albert Bandura, Dorothea Ross and Sheila A. Ross",
+    "citation": "Bandura, A., Ross, D., & Ross, S. A. (1961). Transmission of aggression through imitation of aggressive models. Journal of Abnormal and Social Psychology, 63(3), 575-582.",
+    "doi": "10.1037/h0045925",
+    "hock": "Reading 12",
+    "theme": "learning",
+    "order": 1,
+    "status": "ready",
+    "image": "images/cases/bobo-doll/room1-model.webp",
+    "imageAlt": "An illustrated reconstruction of Room 1: a child at a table with potato stamps and stickers watches a woman kneel on a large inflatable clown and punch its nose.",
+    "intro": [
+      "In about 1960, at Stanford University in California, 72 children aged three to five took part in a simple experiment. Some watched an adult attack a large inflatable clown, a Bobo doll, with punches, kicks, a mallet and shouts of \"Pow!\". Some watched an adult play quietly. Some saw no adult at all.",
+      "A few minutes later, each child was taken to another room with a smaller Bobo doll and left to play while the experimenter did paperwork in a corner. Many of the children who had watched the aggressive adult copied the adult's exact acts and words. The other children almost never did.",
+      "The study showed that children can learn new behaviour just by watching, with no reward. It led to Bandura's social learning theory and to decades of argument about violence on screen. It is also a good case for practising critical analysis, because almost every perspective in your course reads it differently."
+    ],
+    "facts": [
+      {
+        "label": "Authors",
+        "value": "Albert Bandura, Dorothea Ross and Sheila A. Ross"
+      },
+      {
+        "label": "Published",
+        "value": "1961, Journal of Abnormal and Social Psychology"
+      },
+      {
+        "label": "Where",
+        "value": "Stanford University Nursery School, California, USA"
+      },
+      {
+        "label": "Participants",
+        "value": "72 children (36 boys, 36 girls), aged 37 to 69 months"
+      },
+      {
+        "label": "Design",
+        "value": "Laboratory experiment with matched groups: aggressive model, calm model or no model"
+      },
+      {
+        "label": "In Hock",
+        "value": "Reading 12, \"See aggression... do aggression!\""
+      }
+    ]
+  }
+]

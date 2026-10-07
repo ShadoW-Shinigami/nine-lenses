@@ -1,0 +1,17 @@
+---
+import { pageUrl, url, type PageEntry } from '../lib/site';
+interface Props { prev?: PageEntry; next?: PageEntry; caseId: string }
+const { prev, next, caseId } = Astro.props;
+---
+<nav class="pager" aria-label="Previous and next pages">
+  {prev ? (
+    <a class="prev" href={pageUrl(prev)}><small>Previous</small><strong>{prev.data.nav}</strong></a>
+  ) : (
+    <a class="prev" href={url(`cases/${caseId}/`)}><small>Back to</small><strong>Guide overview</strong></a>
+  )}
+  {next ? (
+    <a class="next" href={pageUrl(next)}><small>Next</small><strong>{next.data.nav}</strong></a>
+  ) : (
+    <a class="next" href={url(`cases/${caseId}/`)}><small>Finished</small><strong>Guide overview</strong></a>
+  )}
+</nav>

@@ -1,0 +1,147 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CaseNav from '../../../components/CaseNav.astro';
+import { SECTIONS, lensById, type SectionId } from '../../../data/course';
+import { getCasePages, pageUrl, url, isSubPage, parentId, readingMinutes } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases');
+  return cases.map((c) => ({ params: { case: c.id }, props: { c } }));
+}
+
+const { c } = Astro.props;
+const d = c.data;
+const pages = await getCasePages(c.id);
+const tops = pages.filter((p) => !isSubPage(p));
+const kidsOf = (id: string) => pages.filter((p) => isSubPage(p) && parentId(p) === id);
+const order: SectionId[] = ['A', 'B', 'C', 'D', 'E', 'F'];
+const totalMin = pages.reduce((n, p) => n + readingMinutes(p.body), 0);
+const startPage = tops[0];
+---
+<BaseLayout title={d.title} description={d.question} current="cases" image={d.image}>
+  <div class="reader">
+    <aside><CaseNav caseData={c} pages={pages} /></aside>
+    <main id="main" class="reader__main">
+      <details class="case-nav-mobile">
+        <summary>Contents of this guide</summary>
+        <CaseNav caseData={c} pages={pages} />
+      </details>
+      <article class="hub">
+        <header class="hub__head">
+          <p class="page-head__where hub__crumb"><a href={url('cases/')}>All case guides</a></p>
+          <h1>{d.title}</h1>
+          <p class="hub__q">{d.question}</p>
+          <p class="hub__cite">{d.citation}{d.doi && <> <a href={`https://doi.org/${d.doi}`}>doi:{d.doi}</a></>}</p>
+        </header>
+
+        {d.image && (
+          <figure class="figure figure--wide hub__figure">
+            <a class="figure__frame" href={url(d.image)} aria-label="Open full-size image">
+              <img src={url(d.image)} alt={d.imageAlt ?? ''} width="1536" height="1024" />
+              <span class="figure__tag">Illustrated reconstruction</span>
+            </a>
+            {d.imageAlt && <figcaption>{d.imageAlt}</figcaption>}
+          </figure>
+        )}
+
+        <div class="hub__intro prose">
+          {d.intro.map((para) => <p set:html={para} />)}
+        </div>
+
+        <dl class="facts">
+          {d.facts.map((f) => (<div><dt>{f.label}</dt><dd>{f.value}</dd></div>))}
+        </dl>
+
+        {startPage && (
+          <p class="hub__start">
+            <a class="btn btn--primary" href={pageUrl(startPage)}>Start reading: {startPage.data.nav}</a>
+            <span class="muted">The whole guide takes about {Math.round(totalMin / 5) * 5} minutes. Each page takes 5 to 15.</span>
+          </p>
+        )}
+
+        <h2>What is in this guide</h2>
+        <div class="route-map">
+          {order.map((sec) => {
+            const items = tops.filter((p) => p.data.section === sec);
+            if (!items.length) return null;
+            return (
+              <section class="route-sec">
+                <h3><span class="sec-badge" aria-hidden="true">{sec}</span> {SECTIONS[sec].title}</h3>
+                <ol class="route">
+                  {items.map((p) => {
+                    const kids = kidsOf(p.id);
+                    return (
+                      <li>
+                        <a class="route__item" href={pageUrl(p)}>
+                          <strong>{p.data.nav}</strong>
+                          <span>{p.data.summary}</span>
+                        </a>
+                        {kids.length > 0 && (
+                          <ul class="chips">
+                            {kids.map((k) => {
+                              const lens = k.data.lens ? lensById(k.data.lens) : undefined;
+                              return (
+                                <li><a href={pageUrl(k)}>{lens && <span class="lens-dot" style={`background:${lens.color}`} aria-hidden="true" />}{k.data.nav}</a></li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </section>
+            );
+          })}
+          <section class="route-sec route-sec--g">
+            <h3><span class="sec-badge sec-badge--g" aria-hidden="true">G</span> {SECTIONS.G.title}</h3>
+            <p class="muted">This part is yours. The outline asks: What challenged me? What changed in my thinking? What questions remain? The guide does not answer these for you.</p>
+          </section>
+          {tops.some((p) => p.data.section === 'X') && (
+            <section class="route-sec">
+              <h3><span class="sec-badge sec-badge--x" aria-hidden="true">+</span> {SECTIONS.X.title}</h3>
+              <ol class="route">
+                {tops.filter((p) => p.data.section === 'X').map((p) => (
+                  <li><a class="route__item" href={pageUrl(p)}><strong>{p.data.nav}</strong><span>{p.data.summary}</span></a></li>
+                ))}
+              </ol>
+            </section>
+          )}
+        </div>
+      </article>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .hub { max-width: calc(var(--measure) + 120px); }
+  .hub__head h1 { margin-bottom: 0.3rem; }
+  .hub__crumb { margin-top: 0.4rem; }
+  .hub__q { font-family: var(--font-head); font-size: var(--step-1); line-height: 1.4; color: var(--petrol); margin: 0 0 0.8rem; }
+  .hub__cite { font-size: 0.95rem; color: var(--ink-soft); max-width: 70ch; }
+  .hub__intro { margin-top: 1.5rem; }
+  .facts { max-width: var(--measure); margin: 1.6rem 0; padding: 0.4rem 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+  .facts div { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--line-soft); }
+  .facts div:last-child { border-bottom: 0; }
+  .facts dt { font-weight: 700; color: var(--petrol-deep); font-size: 0.95rem; }
+  .facts dd { margin: 0; font-size: 0.98rem; }
+  @media (max-width: 520px) { .facts div { grid-template-columns: 1fr; gap: 0.1rem; } }
+  .hub__start { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.2rem; margin: 2rem 0; }
+  .btn { display: inline-flex; padding: 0.75rem 1.2rem; border-radius: 999px; font-weight: 700; text-decoration: none; }
+  .btn--primary { background: var(--petrol); color: #fff; }
+  .btn--primary:hover { background: var(--petrol-deep); color: #fff; }
+  .route-map { display: grid; gap: 1.6rem; max-width: var(--measure); }
+  .route-sec h3 { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.6rem; }
+  .route { display: grid; gap: 0.5rem; }
+  .route__item { display: block; padding: 0.75rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; color: var(--ink); }
+  .route__item:hover { border-color: var(--petrol); }
+  .route__item strong { display: block; font-size: 1.02rem; }
+  .route__item span { display: block; color: var(--ink-soft); font-size: 0.93rem; line-height: 1.45; margin-top: 0.15rem; }
+  .chips { list-style: none; padding: 0; margin: 0.5rem 0 0.4rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chips li { margin: 0; }
+  .chips a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 0.9rem; color: var(--ink); text-decoration: none; }
+  .chips a:hover { border-color: var(--ink); }
+  .route-sec--g { border: 1.5px dashed var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; }
+  .route-sec--g p { margin: 0; }
+</style>

@@ -1,0 +1,15 @@
+---
+import { url } from '../lib/site';
+// tag: 'reconstruction' for illustrated historical scenes, 'invented' for made-up teaching examples.
+interface Props { src: string; alt: string; tag?: 'reconstruction' | 'invented'; wide?: boolean; width?: number; height?: number }
+const { src, alt, tag, wide = false, width = 1536, height = 1024 } = Astro.props;
+const full = url(src);
+const tagText = tag === 'reconstruction' ? 'Illustrated reconstruction' : tag === 'invented' ? 'Invented teaching example' : '';
+---
+<figure class:list={['figure', { 'figure--wide': wide }]}>
+  <a class="figure__frame" href={full} aria-label={`Open full-size image: ${alt}`}>
+    <img src={full} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+    {tagText && <span class:list={['figure__tag', { 'figure__tag--invented': tag === 'invented' }]}>{tagText}</span>}
+  </a>
+  <figcaption><slot /></figcaption>
+</figure>

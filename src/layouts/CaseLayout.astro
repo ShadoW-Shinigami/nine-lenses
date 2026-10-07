@@ -1,0 +1,70 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import CaseNav from '../components/CaseNav.astro';
+import Pager from '../components/Pager.astro';
+import { SECTIONS, LENSES, STAKEHOLDERS, lensById } from '../data/course';
+import { pageUrl, readingMinutes, type PageEntry, type CaseEntry } from '../lib/site';
+
+interface Props { entry: PageEntry; caseData: CaseEntry; pages: PageEntry[] }
+const { entry, caseData, pages } = Astro.props;
+const i = pages.findIndex((p) => p.id === entry.id);
+const prev = pages[i - 1];
+const next = pages[i + 1];
+const sec = SECTIONS[entry.data.section];
+const lens = entry.data.lens ? lensById(entry.data.lens) : undefined;
+const minutes = readingMinutes(entry.body);
+const lensPages = pages.filter((p) => p.data.lens);
+const stakePages = pages.filter((p) => p.data.stakeholder);
+const style = lens ? `--lens:${lens.color};--lens-tint:${lens.tint}` : undefined;
+const where = entry.data.section === 'X' ? sec.title : `Section ${entry.data.section}: ${sec.title}`;
+---
+<BaseLayout title={`${entry.data.title} (${caseData.data.title})`} description={entry.data.summary} current="cases" image={caseData.data.image}>
+  <div class="reader">
+    <aside><CaseNav caseData={caseData} pages={pages} currentId={entry.id} /></aside>
+    <main id="main" class="reader__main">
+      <details class="case-nav-mobile">
+        <summary>Contents of this guide</summary>
+        <CaseNav caseData={caseData} pages={pages} currentId={entry.id} />
+      </details>
+      <article class="reader__article" style={style}>
+        <header class:list={['page-head', { 'lens-head': lens }]}>
+          <p class="page-head__where">
+            <span class:list={['sec-badge', { 'sec-badge--x': entry.data.section === 'X' }]} aria-hidden="true">{entry.data.section === 'X' ? '+' : entry.data.section}</span>
+            <span>{where}</span>
+          </p>
+          <h1>{entry.data.title}</h1>
+          {lens && <p class="lens-head__q">{lens.question}</p>}
+          <p class="page-head__meta">About {minutes} minutes to read</p>
+        </header>
+        <div class="content">
+          <slot />
+        </div>
+        {lens && (
+          <nav class="lens-switch" aria-label="Other lenses">
+            <h2>Read the study through another lens</h2>
+            <ul>
+              {LENSES.map((l) => {
+                const p = lensPages.find((x) => x.data.lens === l.id);
+                return p ? (
+                  <li><a href={pageUrl(p)} aria-current={p.id === entry.id ? 'page' : undefined}><span class="lens-dot" style={`background:${l.color}`} aria-hidden="true" />{l.name}</a></li>
+                ) : null;
+              })}
+            </ul>
+          </nav>
+        )}
+        {entry.data.stakeholder && (
+          <nav class="lens-switch" aria-label="Other stakeholders">
+            <h2>Redesign it as someone else</h2>
+            <ul>
+              {STAKEHOLDERS.map((s) => {
+                const p = stakePages.find((x) => x.data.stakeholder === s.id);
+                return p ? (<li><a href={pageUrl(p)} aria-current={p.id === entry.id ? 'page' : undefined}>{s.name}</a></li>) : null;
+              })}
+            </ul>
+          </nav>
+        )}
+        <Pager prev={prev} next={next} caseId={caseData.id} />
+      </article>
+    </main>
+  </div>
+</BaseLayout>

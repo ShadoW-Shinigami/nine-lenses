@@ -1,0 +1,16 @@
+---
+// A practice question built on a specific situation. The answer explains the reasoning.
+interface Props { scenario: string; question: string; label?: string; reveal?: string }
+const { scenario, question, label = 'Try this', reveal = 'Show the reasoning' } = Astro.props;
+---
+<section class="try">
+  <div class="try__head">
+    <p class="try__label">{label}</p>
+    <p class="try__scenario">{scenario}</p>
+    <p class="try__question">{question}</p>
+  </div>
+  <details>
+    <summary>{reveal}</summary>
+    <div class="try__answer"><slot /></div>
+  </details>
+</section>
