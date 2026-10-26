@@ -44,5 +44,51 @@
         "value": "Reading 12, \"See aggression... do aggression!\""
       }
     ]
+  },
+  {
+    "id": "cognitive-dissonance",
+    "title": "The $1 and $20 experiment",
+    "question": "If you are paid to tell a lie, will you come to believe it more when the payment is small?",
+    "year": 1959,
+    "authors": "Leon Festinger and James M. Carlsmith",
+    "citation": "Festinger, L., & Carlsmith, J. M. (1959). Cognitive consequences of forced compliance. Journal of Abnormal and Social Psychology, 58(2), 203-210.",
+    "doi": "10.1037/h0041593",
+    "hock": "Reading 24",
+    "theme": "motivation",
+    "order": 2,
+    "status": "ready",
+    "image": "images/cases/cognitive-dissonance/lie.webp",
+    "imageAlt": "An illustrated reconstruction of the key moment: in a 1950s office, a male student smiles and gestures as he tells a young woman that the experiment is fun, while she listens with a doubtful look. A tape recorder can be seen in a cabinet.",
+    "intro": [
+      "In the late 1950s, at Stanford University in California, male students spent an hour doing deliberately boring tasks: putting spools on a tray and turning pegs on a board. Then the experimenter asked some of them for a favour. Would they tell the next participant, a young woman waiting outside, that the tasks were fun? Some were paid $1 for this, others $20.",
+      "Later, in what seemed to be an unrelated interview, the students rated how enjoyable the tasks had been. Students paid $1 said they had enjoyed the tasks more than students paid $20, and more than students who had not been asked to lie at all. The $20 students' ratings were close to those of students who had not been asked to lie.",
+      "The result went against common sense and against the reward-based theories of the time. It became the classic test of Leon Festinger's theory of cognitive dissonance, the idea that people change their beliefs to fit what they have done. It is also a good case for critical analysis: it relies on layers of deception, rests on a small sample of young American men, and has been explained in rival ways by almost every perspective in your course."
+    ],
+    "facts": [
+      {
+        "label": "Authors",
+        "value": "Leon Festinger and James M. Carlsmith"
+      },
+      {
+        "label": "Published",
+        "value": "1959, Journal of Abnormal and Social Psychology"
+      },
+      {
+        "label": "Where",
+        "value": "Stanford University, California, USA"
+      },
+      {
+        "label": "Participants",
+        "value": "71 male introductory psychology students; 60 analysed, 20 per condition"
+      },
+      {
+        "label": "Design",
+        "value": "Laboratory experiment with three independent groups: paid $1, paid $20, or a control group not asked to lie"
+      },
+      {
+        "label": "In Hock",
+        "value": "Reading 24, \"Thoughts out of tune\""
+      }
+    ]
   }
 ]

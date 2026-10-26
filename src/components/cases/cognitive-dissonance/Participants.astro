@@ -1,0 +1,63 @@
+---
+// Unit chart: one dot per student (71 in total). Filled dots were analysed; hollow dots were excluded.
+// Starting numbers per condition are not printed in the paper. They follow from its list of
+// exclusions (p. 207): 20 analysed in every condition, and 7 excluded from One Dollar, 4 from Twenty Dollars, none from Control.
+const conditions = [
+  { name: 'Control', color: '#1F9E78', kept: 20, excluded: [] as { n: number; why: string }[] },
+  {
+    name: 'One Dollar', color: '#2F6FB0', kept: 20,
+    excluded: [
+      { n: 3, why: 'suspected the real purpose' },
+      { n: 2, why: 'told the woman they had been hired to say it was fun' },
+      { n: 1, why: 'refused the money and refused to be hired' },
+      { n: 1, why: 'asked for her phone number to explain things to her later' },
+    ],
+  },
+  {
+    name: 'Twenty Dollars', color: '#C8752B', kept: 20,
+    excluded: [
+      { n: 2, why: 'suspected the real purpose' },
+      { n: 2, why: 'refused the money and refused to be hired' },
+    ],
+  },
+];
+const total = (c: (typeof conditions)[number]) => c.kept + c.excluded.reduce((s, e) => s + e.n, 0);
+---
+<figure class="chart parts">
+  <p class="chart__title">From 71 students to 60 results</p>
+  <p class="chart__sub">Each dot is one student. Filled dots are the 60 whose answers were analysed. Hollow dots are the 11 whose answers were set aside.</p>
+  <ul class="chart__legend">
+    <li><span class="swatch" style="background:var(--ink-soft);border-radius:50%" aria-hidden="true" />Analysed</li>
+    <li><span class="swatch" style="background:#fff;border:2px solid var(--ink-soft);border-radius:50%" aria-hidden="true" />Excluded</li>
+  </ul>
+  <div class="parts__grid">
+    {conditions.map((c) => (
+      <section class="parts__cond">
+        <h4>{c.name} <span>{total(c)} took part, {c.kept} analysed</span></h4>
+        <div class="parts__dots" role="img" aria-label={`${c.name}: ${total(c)} students took part, ${c.kept} analysed, ${total(c) - c.kept} excluded`}>
+          {Array.from({ length: c.kept }).map(() => <span style={`background:${c.color};border-color:${c.color}`} />)}
+          {Array.from({ length: total(c) - c.kept }).map(() => <span class="out" style={`border-color:${c.color}`} />)}
+        </div>
+        {c.excluded.length === 0
+          ? <p class="parts__why">No one excluded.</p>
+          : <ul class="parts__why">{c.excluded.map((e) => <li><b>{e.n}</b> {e.why}</li>)}</ul>}
+      </section>
+    ))}
+  </div>
+  <p class="chart__foot">Source: Festinger and Carlsmith (1959), pp. 204 and 207. The paper lists the 11 exclusions by condition and reports 20 analysed in each condition; the number who took part in each condition is worked out from those figures.</p>
+</figure>
+
+<style>
+  .parts__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .parts__cond { border: 1px solid var(--line-soft); border-radius: var(--radius-s); padding: 0.7rem 0.75rem 0.5rem; }
+  .parts__cond h4 { margin: 0 0 0.6rem; font-size: 0.98rem; line-height: 1.3; }
+  .parts__cond h4 span { display: block; font-weight: 400; color: var(--ink-soft); font-size: 0.86rem; }
+  .parts__dots { display: grid; grid-template-columns: repeat(7, 14px); gap: 5px; }
+  .parts__dots span { width: 14px; height: 14px; border-radius: 50%; display: block; border: 2px solid; box-sizing: border-box; }
+  .parts__dots span.out { background: #fff; }
+  .parts__why { margin: 0.6rem 0 0.2rem; padding: 0; list-style: none; font-size: 0.84rem; line-height: 1.35; color: var(--ink); }
+  .parts__why li { margin: 0 0 0.3rem; }
+  .parts__why b { font-variant-numeric: tabular-nums; }
+  @media (max-width: 760px) { .parts__grid { grid-template-columns: 1fr; } .parts__dots { grid-template-columns: repeat(14, 14px); } }
+  @media (max-width: 420px) { .parts__dots { grid-template-columns: repeat(10, 14px); } }
+</style>

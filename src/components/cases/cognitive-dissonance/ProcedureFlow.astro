@@ -1,0 +1,73 @@
+---
+// The procedure as a flow: shared steps, a split between the Control and the paid conditions, then shared steps again.
+// Source: Festinger and Carlsmith (1959), pp. 204-207.
+const before = [
+  { title: 'Arrive and wait', time: 'A few minutes', text: 'The student waits in the secretary\'s office. In the laboratory, the experimenter mentions, as if in passing, that the department may want to interview him afterwards.' },
+  { title: 'The boring tasks', time: '1 hour', text: 'Half an hour putting 12 spools on a tray and taking them off. Half an hour turning 48 square pegs a quarter turn at a time. The experimenter watches with a stopwatch.' },
+  { title: 'A false explanation', time: 'A few minutes', text: 'The experimenter "explains" the study: some students are told in advance by a hired student that the tasks are fun. He shows the sheet that student uses.' },
+];
+const control = { title: 'Control: wait', time: '4 minutes', text: 'The experimenter asks him to wait in the secretary\'s office to see whether the interviewer wants him. Nobody asks him to say anything to anyone.' };
+const paid = [
+  { title: 'The request', time: 'A few minutes', text: 'The experimenter, seeming embarrassed, says the hired student has not come in. Would he do it instead? He offers $1 or $20, pays it, and gets a receipt signed.' },
+  { title: 'The lie', time: '2 minutes', text: 'In the secretary\'s office he tells a waiting young woman that the tasks are enjoyable. She says a friend found them boring. A hidden tape recorder runs.' },
+];
+const after = [
+  { title: 'A friendly remark', time: 'Seconds', text: 'On the way to the interview, the experimenter says most students tell him afterwards that they found it quite interesting.' },
+  { title: 'The interview', time: 'A few minutes', text: 'A different person, who does not know the student\'s condition, asks four questions. The student talks about each, then gives a number on a scale.' },
+  { title: 'The truth', time: 'At the end', text: 'He is asked whether he suspected anything. Then the real purpose is explained, and paid students are asked to give the money back. All did.' },
+];
+---
+<figure class="flow" aria-label="The procedure, step by step">
+  <ol class="flow__list">
+    {before.map((s, i) => (
+      <li class="flow__step"><p class="flow__t"><span class="flow__n" aria-hidden="true">{i + 1}</span>{s.title}</p><p class="flow__time">{s.time}</p><p class="flow__x">{s.text}</p></li>
+    ))}
+    <li class="flow__split">
+      <p class="flow__splitlabel">Here the conditions divide</p>
+      <div class="flow__branches">
+        <div class="flow__branch flow__branch--control">
+          <p class="flow__who"><span class="dot" style="background:#1F9E78" aria-hidden="true" />Control group</p>
+          <div class="flow__step"><p class="flow__t"><span class="flow__n" aria-hidden="true">4</span>{control.title}</p><p class="flow__time">{control.time}</p><p class="flow__x">{control.text}</p></div>
+        </div>
+        <div class="flow__branch flow__branch--paid">
+          <p class="flow__who"><span class="dot" style="background:#2F6FB0" aria-hidden="true" /><span class="dot" style="background:#C8752B" aria-hidden="true" />One Dollar and Twenty Dollar groups</p>
+          {paid.map((s, i) => (
+            <div class="flow__step"><p class="flow__t"><span class="flow__n" aria-hidden="true">{i === 0 ? '4a' : '4b'}</span>{s.title}</p><p class="flow__time">{s.time}</p><p class="flow__x">{s.text}</p></div>
+          ))}
+        </div>
+      </div>
+      <p class="flow__splitlabel">From here on, every student is treated the same</p>
+    </li>
+    {after.map((s, i) => (
+      <li class="flow__step"><p class="flow__t"><span class="flow__n" aria-hidden="true">{i + 5}</span>{s.title}</p><p class="flow__time">{s.time}</p><p class="flow__x">{s.text}</p></li>
+    ))}
+  </ol>
+  <figcaption class="chart__foot">Source: Festinger and Carlsmith (1959), pp. 204-207. Timings are the paper's where it gives them.</figcaption>
+</figure>
+
+<style>
+  .flow { margin: 2rem 0; padding: 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+  .flow__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.3rem; }
+  .flow__list > li { position: relative; margin: 0; }
+  .flow__list > li:not(:last-child)::after {
+    content: ''; position: absolute; left: 50%; bottom: -1.05rem; width: 0.7rem; height: 0.7rem;
+    border-right: 2.5px solid var(--petrol); border-bottom: 2.5px solid var(--petrol); transform: translateX(-50%) rotate(45deg);
+  }
+  .flow__step { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 0.65rem 0.8rem 0.7rem; }
+  .flow__t { display: flex; align-items: center; gap: 0.5rem; margin: 0; font-weight: 700; line-height: 1.3; }
+  .flow__n { display: inline-grid; place-items: center; min-width: 1.5rem; height: 1.5rem; padding: 0 0.3rem; border-radius: 999px; background: var(--petrol); color: #fff; font-size: 0.8rem; flex: none; }
+  .flow__time { margin: 0.1rem 0 0.25rem 2rem; color: var(--petrol); font-size: 0.85rem; font-weight: 700; }
+  .flow__x { margin: 0 0 0 2rem; font-size: 0.93rem; line-height: 1.5; }
+  .flow__split { border: 2px dashed var(--line); border-radius: var(--radius); padding: 0.6rem 0.7rem; }
+  .flow__splitlabel { margin: 0 0 0.6rem; text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+  .flow__splitlabel:last-child { margin: 0.6rem 0 0; }
+  .flow__branches { display: grid; grid-template-columns: 1fr 2fr; gap: 0.8rem; align-items: start; }
+  .flow__branch--paid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .flow__branch--paid .flow__who { grid-column: 1 / -1; }
+  .flow__who { display: flex; align-items: center; gap: 0.3rem; margin: 0 0 0.4rem; font-size: 0.88rem; font-weight: 700; }
+  .flow__who .dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; display: inline-block; }
+  .flow__who .dot + .dot { margin-left: -0.15rem; }
+  @media (max-width: 760px) {
+    .flow__branches, .flow__branch--paid { grid-template-columns: 1fr; }
+  }
+</style>

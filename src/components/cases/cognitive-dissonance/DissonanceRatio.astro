@@ -1,0 +1,48 @@
+---
+// Festinger's idea of the total magnitude of dissonance, D / (D + C), drawn for the two paid conditions.
+// The weights are illustrative. The theory gives no numbers; only the direction matters.
+const rows = [
+  { name: 'Paid $1', pay: 0.15, color: '#2F6FB0' },
+  { name: 'Paid $20', pay: 1.6, color: '#C8752B' },
+];
+const D = 1;          // "I believe the tasks were boring" against "I told her they were fun"
+const HELP = 0.35;    // "The experimenter needed help"
+const scale = 100 / (D + HELP + Math.max(...rows.map((r) => r.pay)));
+---
+<figure class="chart dratio">
+  <p class="chart__title">Why less money should mean more dissonance</p>
+  <p class="chart__sub">Festinger's rule: dissonance depends on the dissonant thoughts divided by all the relevant thoughts, dissonant plus consonant. Bar lengths show the weight of each kind of thought.</p>
+  <p class="chart__invented">Illustrative weights, not measured data</p>
+  <ul class="chart__legend">
+    <li><span class="swatch dratio__d" aria-hidden="true" />Dissonant: "I think the tasks were boring" but "I told her they were fun"</li>
+    <li><span class="swatch dratio__h" aria-hidden="true" />Consonant: "The experimenter needed help"</li>
+    <li><span class="swatch" style="background:var(--ink-soft)" aria-hidden="true" />Consonant: "I was paid" (colour shows the amount)</li>
+  </ul>
+  {rows.map((r) => {
+    const ratio = D / (D + HELP + r.pay);
+    return (
+      <div class="dratio__row">
+        <p class="dratio__name">{r.name}</p>
+        <div class="dratio__bar" role="img" aria-label={`${r.name}: dissonant thoughts make up about ${Math.round(ratio * 100)} per cent of the relevant thoughts in this illustration`}>
+          <span class="dratio__seg dratio__d" style={`width:${D * scale}%`}>Dissonant</span>
+          <span class="dratio__seg dratio__h" style={`width:${HELP * scale}%`} title="The experimenter needed help" />
+          <span class="dratio__seg dratio__p" style={`width:${r.pay * scale}%;background:${r.color}`}>{r.pay > 0.5 ? 'The money' : ''}</span>
+        </div>
+        <p class="dratio__out">Share that is dissonant: <b>{Math.round(ratio * 100)}%</b>, so dissonance is <b>{ratio > 0.5 ? 'high' : 'low'}</b></p>
+      </div>
+    );
+  })}
+  <p class="chart__foot">Based on Festinger and Carlsmith (1959), pp. 203-204, where the total magnitude of dissonance is described as "a function of 'D' divided by 'D' plus 'C'". The dissonant part is the same in both rows; only the money changes.</p>
+</figure>
+
+<style>
+  .dratio__row { margin: 1rem 0 0; }
+  .dratio__name { margin: 0 0 0.3rem; font-weight: 700; font-size: 0.95rem; }
+  .dratio__bar { display: flex; gap: 2px; height: 30px; }
+  .dratio__seg { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 0.78rem; font-weight: 700; color: #fff; border-radius: 4px; overflow: hidden; white-space: nowrap; min-width: 4px; }
+  .dratio__d { background: #9B2F3A; }
+  .dratio__h { background: #98A3AE; }
+  .dratio__out { margin: 0.3rem 0 0; font-size: 0.88rem; color: var(--ink); }
+  .chart__legend .dratio__d, .chart__legend .dratio__h { display: inline-block; }
+  .chart__invented { display: inline-block; margin: 0 0 0.6rem; padding: 0.15rem 0.6rem; border-radius: 999px; background: #F1EAF6; color: var(--invented); font-size: 0.82rem; font-weight: 700; }
+</style>

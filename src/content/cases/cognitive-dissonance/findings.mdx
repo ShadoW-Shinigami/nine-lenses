@@ -1,0 +1,153 @@
+---
+title: What the students said afterwards
+nav: Findings
+section: A
+order: 4
+summary: Students paid $1 rated the boring tasks as more enjoyable than students paid $20 or not asked at all. What each question showed, and how the tape recordings ruled out one rival explanation.
+---
+import ScaleBars from '@/components/cases/cognitive-dissonance/ScaleBars.astro';
+
+## How to read the numbers
+
+Each number from the interview is an **average rating for a group of 20 students**. On the main question, students rated the tasks on a scale from -5, "extremely dull and boring", to +5, "extremely interesting and enjoyable". Zero meant neutral. So a group average of -0.45 means that, on average, the group leaned slightly towards "boring". A group average of +1.35 means the group leaned somewhat towards "enjoyable".
+
+Notice how close to the middle every average is. Nobody's average came near +5. The question is not whether students loved the tasks. It is whether one group's opinion moved more than another's.
+
+The paper compares groups two at a time with a <Term>t test</Term>, a standard test of whether the difference between two group averages is bigger than chance would usually produce. A difference is <Term>statistically significant</Term> when it would rarely happen by chance alone. By convention, "rarely" means less than 5 times in 100, written p &lt; .05. Significant does not mean large or important. With only 20 students per group, only fairly large differences reach this standard.
+
+## Finding 1: the $1 students rated the tasks as more enjoyable
+
+This is the main result, and the one the paper calls "most important to the experiment" (p. 207).
+
+<ScaleBars
+  title="Were the tasks interesting and enjoyable?"
+  sub="Average rating in each group, on the scale from -5 to +5. The dark line marks zero, the neutral point."
+  groups={[
+    { name: 'Control', color: '#1F9E78' },
+    { name: '$1', color: '#2F6FB0' },
+    { name: '$20', color: '#C8752B' },
+  ]}
+  rows={[
+    { label: 'How enjoyable the tasks were', min: -5, max: 5, low: 'extremely dull and boring', high: 'extremely interesting and enjoyable', values: [-0.45, 1.35, -0.05] },
+  ]}
+  source="Source: Festinger and Carlsmith (1959), Table 1. 20 students per group."
+  tableCaption="Average enjoyment ratings by condition"
+/>
+
+**The Control group confirmed the tasks were boring.** Students who did the tasks and were never asked to lie gave an average of -0.45, a little on the "boring" side of neutral. This is the <Term>baseline</Term>: what students thought of the tasks without any dissonance being created.
+
+**The $1 group moved towards "enjoyable".** Students paid $1 to tell the woman the tasks were fun gave an average of +1.35. This was clearly higher than the Control group. On the theory, these students had said something they did not believe, with almost no reason to say it, so they had the most dissonance. They reduced it by deciding the tasks had not been so bad after all.
+
+**The $20 group hardly moved.** Students paid $20 to tell exactly the same lie gave an average of -0.05, almost the same as the Control group. On the theory, the $20 gave them a strong reason for what they had said. They had little dissonance, so they had little need to change their opinion.
+
+**The $1 and $20 groups differed.** This is the comparison the theory cares about most, and the difference was significant. The paper's conclusion: "The greater the reward offered (beyond what was necessary to elicit the behavior) the smaller was the effect" (p. 208).
+
+<Note title="The statistics for Finding 1">
+All tests in the paper are two-tailed t tests. One Dollar against Control: t = 2.48, significant at the .02 level. One Dollar against Twenty Dollars: t = 2.22, significant at the .03 level. Twenty Dollars against Control: "slightly and not significantly higher"; the paper gives no t value (pp. 207-208). The paper reports no standard deviations, so effect sizes cannot be calculated exactly. As a rough guide, a t of about 2.2 to 2.5 with 20 people per group corresponds to a standardised difference (Cohen's d) of about 0.7 to 0.8, which is conventionally called medium to large. That estimate is this guide's, not the paper's.
+</Note>
+
+## Finding 2: the $1 students were keener to do a similar experiment
+
+The fourth question asked whether the student would like to take part in another similar experiment. The paper expected the same pattern as Finding 1 but weaker, because many other things affect whether someone wants to do another experiment.
+
+<ScaleBars
+  title="Would you like to take part in a similar experiment?"
+  sub="Average rating in each group, on the scale from -5 to +5. The dark line marks zero."
+  groups={[
+    { name: 'Control', color: '#1F9E78' },
+    { name: '$1', color: '#2F6FB0' },
+    { name: '$20', color: '#C8752B' },
+  ]}
+  rows={[
+    { label: 'Desire to take part in a similar experiment', min: -5, max: 5, low: 'definitely dislike to participate', high: 'definitely like to participate', values: [-0.62, 1.2, -0.25] },
+  ]}
+  source="Source: Festinger and Carlsmith (1959), Table 1. 20 students per group."
+  tableCaption="Average desire to participate again by condition"
+/>
+
+The pattern is the same: the $1 group was positive and the other two were slightly negative. The differences are about as large as in Finding 1. But the students' answers varied more within each group, so the differences did **not** reach the usual standard of significance. The paper reports them honestly as weaker evidence.
+
+<Note title="The statistics for Finding 2">
+One Dollar (+1.20) against Control (-0.62): t = 1.78, the ".08 level". One Dollar against Twenty Dollars (-0.25): t = 1.46, "only the .15 level of significance" (p. 208). Neither meets the conventional p &lt; .05 standard.
+</Note>
+
+## Finding 3: the $1 students rated the experiment as slightly more important
+
+The theory names a second way to reduce dissonance. The paid students had been told their help was needed for the experiment. A student who persuades himself that the experiment is scientifically important gives himself a better reason for having lied, and so feels less dissonance. The researchers thought money was less useful for this, because "it is undoubtedly difficult to convince oneself that one dollar is more than it really is" (p. 208).
+
+<ScaleBars
+  title="The two questions on a 0 to 10 scale"
+  sub="Average rating in each group. On these scales 0 is the lowest point, so bars start at 0."
+  groups={[
+    { name: 'Control', color: '#1F9E78' },
+    { name: '$1', color: '#2F6FB0' },
+    { name: '$20', color: '#C8752B' },
+  ]}
+  rows={[
+    { label: 'How scientifically important the experiment was', min: 0, max: 10, low: 'no scientific value', high: 'a great deal of value', values: [5.6, 6.45, 5.18] },
+    { label: 'How much they learned about their own ability', min: 0, max: 10, low: 'learned nothing', high: 'learned a great deal', values: [3.08, 2.8, 3.15] },
+  ]}
+  source="Source: Festinger and Carlsmith (1959), Table 1. 20 students per group."
+  tableCaption="Average ratings of scientific importance and learning by condition"
+/>
+
+The $1 group rated the experiment as the most important of the three. The paper calls this result "weakly in line" with the theory (p. 208). The difference was not significant by the usual standard.
+
+<Note title="The statistics for Finding 3">
+One Dollar against Twenty Dollars: t = 1.79, ".08 level of significance on a two-tailed test". One Dollar against Control: t = 1.21, "not impressive at all". The Twenty Dollar group's slightly lower rating than the Control group (t = 0.58) is, in the paper's words, "undoubtedly a matter of chance" (p. 208).
+</Note>
+
+## Finding 4: no difference on a question the lie did not touch
+
+The second question asked how much the student had learned about his own ability to do such tasks. The researchers included it because it had "nothing to do with the dissonance" and could not be used to reduce it (p. 208). So they predicted no difference, and found none: the three averages are within 0.35 of each other.
+
+This matters more than it seems. It shows that the $1 students were not simply more positive about everything. Their opinions changed on exactly the topics connected with what they had said, and not on others. A question included to show that an effect is specific, by predicting no change, works like a <Term>control question</Term>.
+
+<Note>
+The largest t value for any difference on this question was 0.48 (p. 208).
+</Note>
+
+## Finding 5: the $1 students did not try harder
+
+One rival explanation was left. Janis and King had suggested that people who argue for a position convince themselves through mental rehearsal: thinking up arguments and saying them. Perhaps the $1 students had, for some reason, argued harder or more convincingly to the woman, and talked themselves round.
+
+To check, the researchers had the tape recordings scored by two raters who did not know each student's condition.
+
+| What the raters scored | Scale | $1 average | $20 average |
+|---|---|---|---|
+| Content before the woman's remark | 0 to 5 | 2.26 | 2.62 |
+| Content after the woman's remark | 0 to 5 | 1.63 | 1.75 |
+| Overall content | 0 to 5 | 1.89 | 2.19 |
+| Persuasiveness and conviction | 0 to 10 | 4.79 | 5.50 |
+| Time spent on the topic | 0 to 10 | 6.74 | 8.19 |
+
+The paper does not say how many recordings were rated. On every dimension the **$20** students scored slightly higher, not lower. The differences were small, and only "time spent on the topic" came near significance. So the $1 students had not argued harder. Their greater change of opinion could not be explained by rehearsal or effort, which left dissonance as the explanation the authors favoured (p. 209).
+
+<Note title="The statistics for Finding 5">
+The t values for the five dimensions, in the order of the table, were 1.08, 0.11, 1.08, 0.99 and 1.80 (Table 2). Higher scores mean more positive statements about the tasks, more persuasiveness, or more time spent on the tasks rather than on other topics.
+</Note>
+
+## The hypotheses: what happened
+
+| Hypothesis | Result | What it means |
+|---|---|---|
+| 1. Saying something against your opinion moves your opinion towards what you said | Supported, for the $1 group | The $1 group's enjoyment rating was clearly higher than the Control group's |
+| 2. The more pressure used, the smaller the change | Supported on the main measure | The $1 group changed more than the $20 group, which barely differed from Control |
+| Same pattern on the less direct questions | Same direction, weaker | Desire to take part again and scientific importance followed the pattern but did not reach significance |
+| The effect is specific to the topic of the lie | Supported | No differences on how much students learned about their ability |
+| Rival explanation: the $1 students argued harder | Not supported | The $20 students argued slightly harder, if anything |
+
+The paper's own summary is confident: "The results strongly corroborate the theory that was tested" (p. 210). Read the tables yourself and you will see a more careful picture. The main result is clear. The supporting results point the same way but are weaker.
+
+<SourceCheck title="Source check: Hock's table and Hock's &quot;clearly significant&quot;">
+Hock's Table 24-1 prints the Control and Twenty Dollar results for questions 1 and 4 without their minus signs: 0.45, 0.05, 0.62 and 0.25. The paper gives -.45, -.05, -.62 and -.25. As printed in Hock, the Control group seems to have found the tasks slightly enjoyable, which contradicts the whole logic of the study: the tasks were boring, and the Control group's slightly negative rating confirms it. Copy the numbers from the paper, not from Hock. Hock also says that for questions 1 and 4 "the differences indicated are clearly significant". That is true for question 1 only. For question 4 the differences reached only the .08 and .15 levels, which the paper itself treats as weak.
+</SourceCheck>
+
+<Try
+  scenario="A classmate writes in her journal: 'The $1 group loved the boring tasks: they gave them +1.35, while the $20 group hated them.'"
+  question="What is wrong with this description, and how would you write the finding accurately?"
+>
+Two things are wrong. First, +1.35 on a scale from -5 to +5 is only moderately positive. It is closer to neutral than to "extremely interesting and enjoyable", so "loved" exaggerates. Second, the $20 group did not hate the tasks. Their average of -0.05 is almost exactly neutral, and very close to the Control group's -0.45.
+
+An accurate version is: "Students paid $1 to describe the boring tasks as enjoyable later rated them as somewhat enjoyable (+1.35 on a -5 to +5 scale). Students paid $20 to say the same thing rated them as neutral (-0.05), close to students who had not been asked to say anything (-0.45)." The finding is about a difference between groups, not about anyone coming to love the tasks.
+</Try>

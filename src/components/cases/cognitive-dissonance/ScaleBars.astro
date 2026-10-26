@@ -1,0 +1,117 @@
+---
+// Average ratings drawn on the full rating scale, one lane per group.
+// Bars start at 0 (the neutral point on a -5 to +5 scale, or the bottom of a 0 to 10 scale),
+// so readers can see both the direction and how small the averages are against the scale.
+// Every value is repeated in a table view underneath.
+interface Group { name: string; color: string }
+interface Row {
+  label: string;      // the question, in plain words
+  min: number;
+  max: number;
+  low: string;        // what the bottom of the scale meant
+  high: string;       // what the top of the scale meant
+  values: number[];   // one per group, same order as groups
+  note?: string;      // a short line under the row, e.g. the main comparison
+}
+interface Props {
+  title: string;
+  sub?: string;
+  groups: Group[];
+  rows: Row[];
+  source: string;
+  tableCaption?: string;
+}
+const { title, sub, groups, rows, source, tableCaption } = Astro.props;
+const fmt = (v: number) => (v > 0 ? `+${v.toFixed(2)}` : v < 0 ? `−${Math.abs(v).toFixed(2)}` : '0.00');
+const pos = (v: number, r: Row) => ((v - r.min) / (r.max - r.min)) * 100;
+const ticks = (r: Row) => Array.from({ length: r.max - r.min + 1 }, (_, i) => r.min + i);
+const tickLabel = (t: number, r: Row) => (r.min < 0 && t > 0 ? `+${t}` : t < 0 ? `−${Math.abs(t)}` : String(t));
+---
+<figure class="chart scalebars">
+  <p class="chart__title">{title}</p>
+  {sub && <p class="chart__sub">{sub}</p>}
+  {groups.length > 1 && (
+    <ul class="chart__legend">
+      {groups.map((g) => <li><span class="swatch" style={`background:${g.color}`} aria-hidden="true" />{g.name}</li>)}
+    </ul>
+  )}
+  {rows.map((r) => {
+    const zero = pos(Math.max(r.min, Math.min(0, r.max)), r);
+    return (
+      <div class="sb__row">
+        <p class="sb__q">{r.label}</p>
+        <div class="sb__ends" aria-hidden="true"><span>{tickLabel(r.min, r)}: {r.low}</span><span>{tickLabel(r.max, r)}: {r.high}</span></div>
+        <div class="sb__lanes" aria-hidden="true">
+          {groups.map((g, i) => {
+            const v = r.values[i];
+            const p = pos(v, r);
+            const left = Math.min(p, zero);
+            const width = Math.abs(p - zero);
+            const neg = v < 0;
+            return (
+              <div class="sb__lane" title={`${g.name}: ${fmt(v)} on a scale from ${r.min} to ${r.max}`}>
+                <span class="sb__name">{g.name}</span>
+                <span class="sb__track">
+                  {ticks(r).map((t) => <i class:list={['sb__tick', { 'sb__tick--zero': t === 0 && r.min < 0 }]} style={`left:${pos(t, r)}%`} />)}
+                  <span class="sb__bar" style={`left:${left}%;width:max(${width}%, 3px);--c:${g.color}`} />
+                  <b class:list={['sb__val', { 'sb__val--neg': neg }]} style={neg ? `right:calc(${100 - left}% + 6px)` : `left:calc(${left + width}% + 6px)`}>{fmt(v)}</b>
+                </span>
+              </div>
+            );
+          })}
+          <div class="sb__lane sb__lane--axis">
+            <span class="sb__name"></span>
+            <span class="sb__axis">
+              {ticks(r).filter((t) => (r.max - r.min > 10 ? t % 2 === 0 : true)).map((t) => <em style={`left:${pos(t, r)}%`}>{tickLabel(t, r)}</em>)}
+            </span>
+          </div>
+        </div>
+        {r.note && <p class="sb__note">{r.note}</p>}
+      </div>
+    );
+  })}
+  <p class="chart__foot">{source}</p>
+  <details>
+    <summary>Show these numbers as a table</summary>
+    <div class="stack-table">
+      <table>
+        {tableCaption && <caption class="visually-hidden">{tableCaption}</caption>}
+        <thead><tr><th>Question</th>{groups.map((g) => <th>{g.name}</th>)}</tr></thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr>
+              <td data-label="Question">{r.label} ({tickLabel(r.min, r)} to {tickLabel(r.max, r)})</td>
+              {r.values.map((v, i) => <td data-label={groups[i].name}>{fmt(v)}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<style>
+  .sb__row { margin: 1.1rem 0 0; padding-top: 0.9rem; border-top: 1px solid var(--line-soft); }
+  .sb__row:first-of-type { border-top: 0; padding-top: 0.2rem; }
+  .sb__q { margin: 0 0 0.25rem; font-weight: 700; font-size: 0.98rem; line-height: 1.35; }
+  .sb__ends { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 0.5rem 4.6rem; font-size: 0.8rem; color: var(--ink-soft); line-height: 1.3; }
+  .sb__ends span:last-child { text-align: right; }
+  .sb__lanes { display: grid; gap: 4px; }
+  .sb__lane { display: grid; grid-template-columns: 4.2rem 1fr; align-items: center; gap: 0.4rem; }
+  .sb__name { font-size: 0.85rem; color: var(--ink); font-weight: 700; text-align: right; }
+  .sb__track { position: relative; height: 22px; background: #F3F6F7; border-radius: 4px; }
+  .sb__tick { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line); }
+  .sb__tick--zero { width: 2px; margin-left: -0.5px; background: var(--ink-soft); }
+  .sb__bar { position: absolute; top: 4px; bottom: 4px; background: var(--c); border-radius: 4px; }
+  .sb__val { position: absolute; top: 50%; transform: translateY(-50%); font-size: 0.8rem; font-weight: 700; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; background: rgba(255,255,255,0.85); padding: 0 2px; border-radius: 3px; }
+  .sb__axis { position: relative; height: 1.2rem; }
+  .sb__axis em { position: absolute; transform: translateX(-50%); font-style: normal; font-size: 0.74rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .sb__note { margin: 0.35rem 0 0 4.6rem; font-size: 0.85rem; color: var(--ink-soft); line-height: 1.4; }
+  @media (max-width: 600px) {
+    .sb__ends, .sb__note { margin-left: 0; }
+    .sb__ends { flex-direction: column; gap: 0.1rem; }
+    .sb__ends span:last-child { text-align: left; }
+    .sb__lane { grid-template-columns: 3rem 1fr; }
+    .sb__name { font-size: 0.8rem; }
+  }
+</style>
