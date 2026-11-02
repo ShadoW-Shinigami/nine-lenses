@@ -1,6 +1,6 @@
 # Nine Lenses
 
-Case-study guides for the MSc course *Paradigms and Perspectives in Psychology*. Each guide explains a classic study from the beginning, then reads it through nine perspectives: behavioural, cognitive, psychoanalytic, biological, humanistic, social, cultural, critical and decolonial.
+Case-study guides for the MSc course *Paradigms and Perspectives in Psychology*. Each guide explains a classic study from the beginning, then reads it through nine perspectives: behavioural, cognitive, psychoanalytic, biological, humanistic, social, cultural, critical and decolonial. Each guide also has an ethics page, and some guides have an optional philosophy zone that reads the study's core idea through Aristotle, Kant, Ayn Rand, pragmatism and existentialism.
 
 Live site: https://shadow-shinigami.github.io/nine-lenses/
 

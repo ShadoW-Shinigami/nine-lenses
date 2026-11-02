@@ -15,7 +15,9 @@ const d = c.data;
 const pages = await getCasePages(c.id);
 const tops = pages.filter((p) => !isSubPage(p));
 const kidsOf = (id: string) => pages.filter((p) => isSubPage(p) && parentId(p) === id);
-const order: SectionId[] = ['A', 'B', 'C', 'D', 'E', 'F'];
+// A to F follow the outline; G is the student's own section; P (philosophy zone) and X (study tools) are extras.
+const order: SectionId[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'P', 'X'];
+const badge = (sec: SectionId) => (sec === 'X' ? '+' : sec === 'P' ? 'Φ' : sec);
 const totalMin = pages.reduce((n, p) => n + readingMinutes(p.body), 0);
 const startPage = tops[0];
 ---
@@ -63,11 +65,19 @@ const startPage = tops[0];
         <h2>What is in this guide</h2>
         <div class="route-map">
           {order.map((sec) => {
+            if (sec === 'G') {
+              return (
+                <section class="route-sec route-sec--g">
+                  <h3><span class="sec-badge sec-badge--g" aria-hidden="true">G</span> {SECTIONS.G.title}</h3>
+                  <p class="muted">This part is yours. The outline asks: What challenged me? What changed in my thinking? What questions remain? The guide does not answer these for you.</p>
+                </section>
+              );
+            }
             const items = tops.filter((p) => p.data.section === sec);
             if (!items.length) return null;
             return (
               <section class="route-sec">
-                <h3><span class="sec-badge" aria-hidden="true">{sec}</span> {SECTIONS[sec].title}</h3>
+                <h3><span class:list={['sec-badge', { 'sec-badge--x': sec === 'X', 'sec-badge--p': sec === 'P' }]} aria-hidden="true">{badge(sec)}</span> {SECTIONS[sec].title}{sec === 'P' && <span class="muted route-sec__extra">extra, not part of the outline</span>}</h3>
                 <ol class="route">
                   {items.map((p) => {
                     const kids = kidsOf(p.id);
@@ -94,20 +104,6 @@ const startPage = tops[0];
               </section>
             );
           })}
-          <section class="route-sec route-sec--g">
-            <h3><span class="sec-badge sec-badge--g" aria-hidden="true">G</span> {SECTIONS.G.title}</h3>
-            <p class="muted">This part is yours. The outline asks: What challenged me? What changed in my thinking? What questions remain? The guide does not answer these for you.</p>
-          </section>
-          {tops.some((p) => p.data.section === 'X') && (
-            <section class="route-sec">
-              <h3><span class="sec-badge sec-badge--x" aria-hidden="true">+</span> {SECTIONS.X.title}</h3>
-              <ol class="route">
-                {tops.filter((p) => p.data.section === 'X').map((p) => (
-                  <li><a class="route__item" href={pageUrl(p)}><strong>{p.data.nav}</strong><span>{p.data.summary}</span></a></li>
-                ))}
-              </ol>
-            </section>
-          )}
         </div>
       </article>
     </main>
@@ -144,4 +140,5 @@ const startPage = tops[0];
   .chips a:hover { border-color: var(--ink); }
   .route-sec--g { border: 1.5px dashed var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; }
   .route-sec--g p { margin: 0; }
+  .route-sec__extra { font-family: var(--font-body); font-weight: 400; font-size: 0.85rem; margin-left: 0.4rem; }
 </style>

@@ -26,9 +26,13 @@ Publication is pre-authorised for this project. Do not ask for approval before c
 7. **Proportionate checks.** `npm run build`, `npm run check`, then look at the hub, one Section A page, one lens page, the findings page and one stakeholder page at 390 px and 1280 px. Fix what is broken. Do not run exhaustive screenshot audits unless something suggests a systemic problem.
 8. **Commit and publish.** Set the case `status` to `ready`, commit on `main`, push. GitHub Actions deploys to GitHub Pages. Confirm the live URL loads the new case, then tell the user the link and a short account of what was reviewed and fixed.
 
+## Philosophy zone (optional)
+
+Section P, the philosophy zone, is extra to the outline and is built only when the user asks for philosophical lenses on a case. It reads the study's core concept through Aristotle, Kant, Ayn Rand, pragmatism and existentialism, one page each plus a hub (see the page plan). Sources are the texts in `_private/sources/philosophy/` (README lists editions and the text conversions in `text/`). Run the philosophy research agents in [references/research.md](references/research.md) first, write from their dossiers with locators on every claim, and have the Fable review check each quotation against the text files. Scaffold with `node .claude/skills/case-guide/scripts/new-case.mjs <slug> --philosophy` for a new case, or `--philosophy-only` to add the zone to an existing case.
+
 ## Standards that do not change between cases
 
-- Sections A to F of the outline are covered, in that order. Section C covers all nine lenses. Section F covers all seven stakeholders.
+- Sections A to F of the outline are covered, in that order. Section C covers all nine lenses. Section E has three pages: design, strengths and limitations, and ethics (then and now). Section F covers all seven stakeholders.
 - A reader with no psychology background can follow Section A without outside help.
 - Every number in the guide comes from the original paper or a named later source, never from Hock alone.
 - Statistical detail goes in `<Note>` side notes beside the plain explanation.

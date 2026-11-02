@@ -1,7 +1,7 @@
 // Shared course structure. These follow the school's Reflective Learning
 // Journey outline (Sections A to G) and the nine perspectives it lists.
 
-export type SectionId = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'X';
+export type SectionId = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'P' | 'X';
 
 export const SECTIONS: Record<SectionId, { title: string; short: string; outline: string }> = {
   A: { title: 'Understanding the study', short: 'The study', outline: 'Citation, the study (summary, participants, method, findings) and its importance.' },
@@ -11,6 +11,7 @@ export const SECTIONS: Record<SectionId, { title: string; short: string; outline
   E: { title: 'Research design critique', short: 'Design critique', outline: 'The research design, its strengths and its limitations.' },
   F: { title: 'Stakeholder redesign', short: 'Redesign', outline: 'How different people would redesign the study, and why.' },
   G: { title: 'Learning journey reflection', short: 'Your reflection', outline: 'What challenged you, what changed, what questions remain. You write this part.' },
+  P: { title: 'Philosophy zone', short: 'Philosophy', outline: 'Extra to the outline: the core idea of the study read through five philosophical traditions.' },
   X: { title: 'Study tools', short: 'Tools', outline: 'Practice questions and sources.' },
 };
 
@@ -120,3 +121,38 @@ export const STAKEHOLDERS: { id: StakeholderId; name: string; cares: string }[] 
   { id: 'policymaker', name: 'Policymaker', cares: 'Rules that work for a whole population.' },
   { id: 'community-leader', name: 'Community leader', cares: 'Whether the knowledge fits and serves my community.' },
 ];
+
+// Philosophy zone: an optional extra section, built only when asked for. One colour for the
+// whole zone keeps it visually distinct from the nine course lenses.
+export type PhilosophyId = 'aristotle' | 'kant' | 'rand' | 'pragmatism' | 'existentialism';
+
+export interface Philosophy {
+  id: PhilosophyId;
+  name: string;
+  people: string;   // who speaks for this tradition
+  question: string; // the question this tradition always asks
+  focus: string;    // one-sentence core idea for beginners
+}
+
+export const PHILOSOPHY_COLOR = '#6B3A7D';
+export const PHILOSOPHY_TINT = '#F0E7F3';
+
+export const PHILOSOPHIES: Philosophy[] = [
+  { id: 'aristotle', name: 'Aristotle', people: 'Aristotle (384 to 322 BCE)',
+    question: 'What kind of person does this act, repeated, make?',
+    focus: 'Character is formed by habituation. Doing acts of a kind makes a person of that kind, so what the young practise and watch matters.' },
+  { id: 'kant', name: 'Kant', people: 'Immanuel Kant (1724 to 1804)',
+    question: 'Is this person acting from reason, or being moved like a mechanism?',
+    focus: 'A person is a free, rational agent who owes truthfulness to others and to themselves, and who must never be used merely as a means.' },
+  { id: 'rand', name: 'Ayn Rand', people: 'Ayn Rand (1905 to 1982)',
+    question: 'Did the person choose to think, or choose to evade?',
+    focus: 'Reason is volitional. Independence and honesty mean never faking reality, in what you say or in what you let yourself believe.' },
+  { id: 'pragmatism', name: 'Pragmatism', people: 'Charles Sanders Peirce, William James, John Dewey, George Herbert Mead',
+    question: 'What difference does this belief or habit make in practice?',
+    focus: 'Beliefs are habits of action, formed and tested in a social world. Ideas are judged by what they do.' },
+  { id: 'existentialism', name: 'Existentialism', people: 'Kierkegaard, Nietzsche, Sartre, Beauvoir, Camus',
+    question: 'What is this person doing with their freedom, and what are they fleeing?',
+    focus: 'Existence precedes essence. People make themselves through choices, and often flee that freedom into roles, crowds and self-deception.' },
+];
+
+export const philosophyById = (id: string) => PHILOSOPHIES.find((p) => p.id === id);

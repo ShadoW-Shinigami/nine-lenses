@@ -7,11 +7,12 @@ const pages = defineCollection({
   schema: z.object({
     title: z.string(),
     nav: z.string(),
-    section: z.enum(['A', 'B', 'C', 'D', 'E', 'F', 'X']),
+    section: z.enum(['A', 'B', 'C', 'D', 'E', 'F', 'P', 'X']),
     order: z.number(),
     summary: z.string(),
     lens: z.string().optional(),
     stakeholder: z.string().optional(),
+    philosophy: z.string().optional(),
   }),
 });
 

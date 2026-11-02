@@ -6,7 +6,8 @@ When every page is drafted and the build passes, launch one background Agent wit
 
 - the case folder, `src/data/cases.json`, and the research folder with the original paper text, table images and dossiers;
 - a summary of the outline (Sections A to F, all nine lenses, all seven stakeholders, G left alone);
-- the six review headings: accuracy (numbers, quotations, claims against sources, repeated Hock errors); comprehension for a beginner reading in a second language; quality of each lens and stakeholder analysis; practice questions; style rules (from `writing.md`); visuals (meaning, labels, image accuracy);
+- the six review headings: accuracy (numbers, quotations, claims against sources, repeated Hock errors); comprehension for a beginner reading in a second language; quality of each lens and stakeholder analysis, and of the ethics page (claims about codes checked against the codes themselves); practice questions; style rules (from `writing.md`); visuals (meaning, labels, image accuracy);
+- when the case has a philosophy zone: the text conversions in `_private/sources/philosophy/text/` and `public-domain/`, with the instruction to grep every quotation and locator on the philosophy pages against them, and to flag any claim about a thinker that the texts do not support;
 - the output format: findings with ID, severity, file, exact quote, evidence, suggested fix, written to `_private/research/<slug>/review-fable.md`; a list of strengths to keep; unverified claims.
 
 Tell it not to edit files. Fix every critical and major finding. For each minor finding, fix it or note why not. Record the outcome at the end of `review-fable.md` ("Repairs"). If repairs change many pages, a short second Fable pass on the changed files is worthwhile; otherwise do not repeat the full review.

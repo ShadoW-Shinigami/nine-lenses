@@ -146,6 +146,7 @@ code { font-size: 0.9em; background: var(--line-soft); padding: 0.1em 0.3em; bor
   flex: none;
 }
 .sec-badge--x { background: var(--ink-soft); }
+.sec-badge--p { background: #6B3A7D; }
 .sec-badge--g { background: transparent; color: var(--petrol); border: 1.5px dashed var(--petrol); }
 
 /* ---------- Reading layout ---------- */
