@@ -55,7 +55,7 @@ Every claim on these pages rests on the texts in `_private/sources/philosophy/` 
 ### Philosophy page template
 
 1. **The tradition in brief.** Who, when, which works are used (edition named), the two or three ideas that matter for this concept, each defined in plain words with a short quotation.
-2. **What [tradition] says about [the concept].** The primary passages, quoted briefly with locators, explained for a reader with no philosophy.
+2. **What [tradition] says about [the concept].** One bolded idea at a time. For each: the primary passage quoted briefly with its locator; then a paragraph beginning "In plain words:" that explains it for a reader with no philosophy, with an everyday example where it helps and any term defined; then a paragraph beginning "Why it matters here:" that ties it to a specific detail of the study. Never leave a quotation without its explanation.
 3. **Reading the study through this tradition.** Four to six bolded points, each tied to a specific detail of the procedure or results and to a cited passage.
 4. **Where it agrees with the study, and where it clashes.**
 5. **Questions it would put to the researchers.** Bullets.
