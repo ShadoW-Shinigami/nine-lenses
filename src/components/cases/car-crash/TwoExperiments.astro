@@ -1,0 +1,72 @@
+---
+// The design of the two experiments side by side.
+// Source: Loftus and Palmer (1974), pp. 586-587.
+const exps = [
+  {
+    name: 'Experiment 1',
+    who: '45 students, tested in groups of various sizes',
+    steps: [
+      { t: 'Watch seven short films', x: 'Each film shows a traffic accident and lasts 5 to 30 seconds. The order of the films changes from group to group.' },
+      { t: 'After each film, a questionnaire', x: 'First "give an account of the accident you have just seen", then specific questions. One of them is the speed question.' },
+    ],
+    groups: [
+      { label: 'smashed', n: 9 }, { label: 'collided', n: 9 }, { label: 'bumped', n: 9 }, { label: 'hit', n: 9 }, { label: 'contacted', n: 9 },
+    ],
+    measure: 'The speed each student gives, in miles per hour.',
+    time: 'One session of about an hour and a half.',
+  },
+  {
+    name: 'Experiment 2',
+    who: '150 students, tested in groups of various sizes',
+    steps: [
+      { t: 'Watch one short film', x: 'A multiple car accident. The film lasts less than a minute; the accident in it lasts 4 seconds.' },
+      { t: 'A questionnaire', x: 'First describe the accident in your own words, then answer questions. For two groups, one of them is the speed question.' },
+      { t: 'One week later', x: 'The students return. Without seeing the film again they answer 10 questions, one of them "Did you see any broken glass?"' },
+    ],
+    groups: [
+      { label: 'smashed', n: 50, c: '#C8752B' }, { label: 'hit', n: 50, c: '#2F6FB0' }, { label: 'no speed question', n: 50, c: '#1F9E78' },
+    ],
+    measure: 'The speed estimate, and a week later the answer "yes" or "no" about broken glass.',
+    time: 'Two sessions, one week apart.',
+  },
+];
+---
+<figure class="twox" aria-label="The design of the two experiments">
+  <div class="twox__grid">
+    {exps.map((e) => (
+      <section class="twox__exp">
+        <p class="twox__name">{e.name}</p>
+        <p class="twox__who">{e.who}</p>
+        <ol class="twox__steps">
+          {e.steps.map((s, i) => (<li><p class="twox__t"><span aria-hidden="true">{i + 1}</span>{s.t}</p><p class="twox__x">{s.x}</p></li>))}
+        </ol>
+        <p class="twox__label">Verb in the speed question, and students per verb</p>
+        <ul class="twox__groups">
+          {e.groups.map((g) => (<li style={g.c ? `--c:${g.c}` : undefined}><b>{g.label}</b> {g.n}</li>))}
+        </ul>
+        <p class="twox__meta"><b>Measured:</b> {e.measure}</p>
+        <p class="twox__meta"><b>Time:</b> {e.time}</p>
+      </section>
+    ))}
+  </div>
+  <figcaption class="chart__foot">Source: Loftus and Palmer (1974), pp. 586-587. The question in both experiments was "About how fast were the cars going when they ___ each other?" The paper says "smashed into each other".</figcaption>
+</figure>
+
+<style>
+  .twox { margin: 2rem 0; padding: 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+  .twox__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .twox__exp { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 0.8rem 0.9rem; }
+  .twox__name { margin: 0; font-family: var(--font-head); font-weight: 600; font-size: 1.1rem; color: var(--petrol-deep); }
+  .twox__who { margin: 0.1rem 0 0.7rem; font-size: 0.9rem; color: var(--ink-soft); }
+  .twox__steps { list-style: none; margin: 0 0 0.8rem; padding: 0; display: grid; gap: 0.55rem; }
+  .twox__steps li { margin: 0; }
+  .twox__t { display: flex; align-items: center; gap: 0.45rem; margin: 0; font-weight: 700; font-size: 0.95rem; line-height: 1.3; }
+  .twox__t span { display: inline-grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 999px; background: var(--petrol); color: #fff; font-size: 0.78rem; flex: none; }
+  .twox__x { margin: 0.15rem 0 0 1.85rem; font-size: 0.9rem; line-height: 1.45; }
+  .twox__label { margin: 0 0 0.35rem; font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+  .twox__groups { list-style: none; margin: 0 0 0.7rem; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .twox__groups li { margin: 0; padding: 0.2rem 0.55rem; border-radius: 999px; border: 1.5px solid var(--c, var(--petrol)); font-size: 0.86rem; background: var(--surface); }
+  .twox__groups b { color: var(--c, var(--petrol-deep)); }
+  .twox__meta { margin: 0.2rem 0 0; font-size: 0.88rem; line-height: 1.45; }
+  @media (max-width: 760px) { .twox__grid { grid-template-columns: 1fr; } }
+</style>

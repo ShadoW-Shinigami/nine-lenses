@@ -90,5 +90,51 @@
         "value": "Reading 24, \"Thoughts out of tune\""
       }
     ]
+  },
+  {
+    "id": "car-crash",
+    "title": "The car crash study",
+    "question": "Can the wording of one question change what a witness remembers?",
+    "year": 1974,
+    "authors": "Elizabeth F. Loftus and John C. Palmer",
+    "citation": "Loftus, E. F., & Palmer, J. C. (1974). Reconstruction of automobile destruction: An example of the interaction between language and memory. Journal of Verbal Learning and Verbal Behavior, 13(5), 585-589.",
+    "doi": "10.1016/S0022-5371(74)80011-3",
+    "hock": "Not in Hock (Reading 16 covers the 1975 follow-up)",
+    "theme": "memory",
+    "order": 3,
+    "status": "ready",
+    "image": "images/cases/car-crash/watch.webp",
+    "imageAlt": "An illustrated reconstruction: students in a dimmed 1970s seminar room watch a projected film of two cars colliding at an intersection, while a young woman researcher stands by the film projector holding questionnaire booklets.",
+    "intro": [
+      "In 1974, at the University of Washington in Seattle, students watched short films of car accidents and then answered questions about them. One question asked how fast the cars were going when they \"hit\" each other. For other students, the word \"hit\" was replaced by \"smashed\", \"collided\", \"bumped\" or \"contacted\". Nothing else changed.",
+      "Students who read \"smashed\" gave the highest speeds, on average 9 miles per hour more than students who read \"contacted\". In a second experiment, students came back a week later and were asked whether they had seen any broken glass. There was none in the film. About a third of the \"smashed\" group said yes, against about one in eight in the other two groups.",
+      "The study helped to show that memory is rebuilt each time we use it, and that a question can change what a witness remembers. It shaped how police interview witnesses and fed a long, bitter argument about false memories. It is also a good case for critical analysis: it is tightly controlled but artificial, its statistics are thinner than textbooks suggest, and every perspective in your course reads it differently."
+    ],
+    "facts": [
+      {
+        "label": "Authors",
+        "value": "Elizabeth F. Loftus and John C. Palmer"
+      },
+      {
+        "label": "Published",
+        "value": "1974, Journal of Verbal Learning and Verbal Behavior"
+      },
+      {
+        "label": "Where",
+        "value": "University of Washington, Seattle, USA"
+      },
+      {
+        "label": "Participants",
+        "value": "195 students in two experiments: 45 in Experiment 1, 150 in Experiment 2"
+      },
+      {
+        "label": "Design",
+        "value": "Two laboratory experiments with independent groups. Only the verb in one question changed between groups."
+      },
+      {
+        "label": "Textbooks",
+        "value": "Gross, Key Studies in Psychology, chapter 6. Hock's Reading 16, \"Thanks for the memories!\", covers the follow-up study, Loftus (1975)."
+      }
+    ]
   }
 ]

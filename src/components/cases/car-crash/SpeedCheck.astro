@@ -1,0 +1,80 @@
+---
+// Dot plot: actual speed of the four staged crashes against the students' average estimate.
+// Source: Loftus and Palmer (1974), p. 586. The letters A to D are this guide's labels.
+const crashes = [
+  { label: 'Crash A', actual: 20, est: 37.7 },
+  { label: 'Crash B', actual: 30, est: 36.2 },
+  { label: 'Crash C', actual: 40, est: 39.7 },
+  { label: 'Crash D', actual: 40, est: 36.1 },
+];
+const max = 50;
+const ticks = [0, 10, 20, 30, 40, 50];
+const pos = (v: number) => `${(v / max) * 100}%`;
+---
+<figure class="chart speed">
+  <p class="chart__title">The four staged crashes: actual speed and average estimate</p>
+  <p class="chart__sub">Miles per hour. The paper gives one average per film, presumably across all five verb conditions. Notice that the estimates bunch together while the real speeds spread out.</p>
+  <ul class="chart__legend">
+    <li><span class="speed__key speed__key--actual" aria-hidden="true" />Actual speed</li>
+    <li><span class="speed__key speed__key--est" aria-hidden="true" />Average estimate</li>
+  </ul>
+  <div class="speed__rows">
+    {crashes.map((c) => (
+      <div class="speed__row" role="img" aria-label={`${c.label}: actual speed ${c.actual} mph, average estimate ${c.est} mph`}>
+        <p class="speed__label">{c.label}</p>
+        <div class="speed__track" aria-hidden="true">
+          {ticks.map((t) => <span class="speed__grid" style={`left:${pos(t)}`} />)}
+          <span class="speed__line" style={`left:${pos(Math.min(c.actual, c.est))};width:${pos(Math.abs(c.est - c.actual))}`} />
+          <span class="speed__dot speed__dot--actual" style={`left:${pos(c.actual)}`} />
+          <span class="speed__dot speed__dot--est" style={`left:${pos(c.est)}`} />
+        </div>
+        <p class="speed__nums" aria-hidden="true">Actual <b>{c.actual}</b>, estimate <b>{c.est.toFixed(1)}</b></p>
+      </div>
+    ))}
+    <div class="speed__row speed__row--axis" aria-hidden="true">
+      <span />
+      <div class="speed__axis">{ticks.map((t) => <em style={`left:${pos(t)}`}>{t}</em>)}</div>
+      <span />
+    </div>
+  </div>
+  <p class="chart__foot">Source: Loftus and Palmer (1974), p. 586. The letters A to D are this guide's labels; the paper does not name the films.</p>
+  <details>
+    <summary>Show these numbers as a table</summary>
+    <div class="stack-table">
+      <table>
+        <caption class="visually-hidden">Actual speed and mean estimate for the four staged crashes</caption>
+        <thead><tr><th>Crash</th><th>Actual speed (mph)</th><th>Average estimate (mph)</th></tr></thead>
+        <tbody>
+          {crashes.map((c) => (
+            <tr><td data-label="Crash">{c.label}</td><td data-label="Actual speed (mph)">{c.actual}</td><td data-label="Average estimate (mph)">{c.est.toFixed(1)}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<style>
+  .speed__rows { display: grid; gap: 0.2rem; margin-top: 0.4rem; }
+  .speed__row { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) 11rem; align-items: center; gap: 0.8rem; min-height: 2.4rem; }
+  .speed__label { margin: 0; font-weight: 700; font-size: 0.92rem; }
+  .speed__track { position: relative; height: 1.6rem; }
+  .speed__grid { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--line-soft); }
+  .speed__line { position: absolute; top: 50%; height: 3px; transform: translateY(-50%); background: var(--line); }
+  .speed__dot { position: absolute; top: 50%; width: 14px; height: 14px; border-radius: 50%; transform: translate(-50%, -50%); box-sizing: border-box; }
+  .speed__dot--actual { background: #fff; border: 3px solid #7D8896; }
+  .speed__dot--est { background: #1C5A77; border: 2px solid #1C5A77; }
+  .speed__key { display: inline-block; width: 0.9rem; height: 0.9rem; border-radius: 50%; box-sizing: border-box; }
+  .speed__key--actual { background: #fff; border: 3px solid #7D8896; }
+  .speed__key--est { background: #1C5A77; }
+  .speed__nums { margin: 0; font-size: 0.85rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .speed__nums b { color: var(--ink); }
+  .speed__axis { position: relative; height: 1.2rem; border-top: 1px solid var(--ink-soft); }
+  .speed__axis em { position: absolute; top: 0.15rem; transform: translateX(-50%); font-style: normal; font-size: 0.78rem; color: var(--ink-soft); }
+  @media (max-width: 600px) {
+    .speed__row { grid-template-columns: 1fr; gap: 0.15rem; padding: 0.3rem 0; }
+    .speed__row--axis > span { display: none; }
+    .speed__track { margin: 0 0.5rem; }
+    .speed__axis { margin: 0 0.5rem; }
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+// The paper's own framework (p. 588): two kinds of information are integrated into one memory.
+---
+<figure class="integ" aria-label="How two kinds of information become one memory">
+  <p class="chart__title">Two kinds of information, one memory</p>
+  <p class="chart__sub">The framework Loftus and Palmer propose in their discussion (p. 588), applied to Experiment 2.</p>
+  <div class="integ__in">
+    <div class="integ__box">
+      <p class="integ__k">Information from the event</p>
+      <p>What the student saw in the film: a 4-second multiple car accident, with no broken glass.</p>
+    </div>
+    <span class="integ__plus" aria-hidden="true">+</span>
+    <div class="integ__box">
+      <p class="integ__k">Information supplied after the event</p>
+      <p>The question "About how fast were the cars going when they smashed into each other?" tells the student that the cars smashed.</p>
+    </div>
+  </div>
+  <div class="integ__arrow" aria-hidden="true"></div>
+  <div class="integ__box integ__box--mem">
+    <p class="integ__k">One memory</p>
+    <p>Over time the two are combined. The student cannot tell which detail came from which source. In the paper's words: "All we have is one 'memory.'"</p>
+  </div>
+  <div class="integ__arrow" aria-hidden="true"></div>
+  <div class="integ__box integ__box--out">
+    <p class="integ__k">A week later</p>
+    <p>The student remembers a more severe accident than the one shown. Broken glass fits a severe accident, so "yes, I saw broken glass" becomes more likely.</p>
+  </div>
+</figure>
+
+<style>
+  .integ { margin: 2rem 0; padding: 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+  .integ__in { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 0.6rem; align-items: center; }
+  .integ__plus { font-size: 1.6rem; font-weight: 700; color: var(--petrol); text-align: center; }
+  .integ__box { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 0.65rem 0.8rem; font-size: 0.92rem; line-height: 1.45; }
+  .integ__box p { margin: 0; }
+  .integ__box p + p { margin-top: 0.25rem; }
+  .integ__k { font-weight: 700; color: var(--petrol-deep); }
+  .integ__box--mem { border: 2px solid var(--petrol); background: var(--petrol-tint); }
+  .integ__box--out { border-style: dashed; }
+  .integ__arrow { width: 0.75rem; height: 0.75rem; margin: 0.45rem auto 0.75rem; border-right: 2.5px solid var(--petrol); border-bottom: 2.5px solid var(--petrol); transform: rotate(45deg); }
+  @media (max-width: 640px) { .integ__in { grid-template-columns: 1fr; } .integ__plus { line-height: 1; } }
+</style>

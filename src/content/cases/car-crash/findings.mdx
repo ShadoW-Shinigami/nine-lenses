@@ -1,0 +1,157 @@
+---
+title: What the students reported
+nav: Findings
+section: A
+order: 4
+summary: Students asked about cars that "smashed" gave the highest speeds, and a week later were more likely to "remember" broken glass that was never there. What each result shows, and what it does not.
+---
+import TwoExplanations from '@/components/cases/car-crash/TwoExplanations.astro';
+import GlassDots from '@/components/cases/car-crash/GlassDots.astro';
+import SpeedCheck from '@/components/cases/car-crash/SpeedCheck.astro';
+
+## How to read the numbers
+
+The speed results are **averages**. An average, or <Term>mean</Term>, is the total of everyone's answers divided by the number of people. In Experiment 1, each verb was read by 9 students, and each student estimated speeds for seven films. So each average in the chart below combines many answers. The paper does not report how much the answers varied around each average.
+
+The broken glass results are **counts**: how many of the 50 students in each condition said "yes".
+
+The paper tests whether its differences are bigger than chance would usually produce. A difference is <Term>statistically significant</Term> when it would rarely happen by chance alone, conventionally less than 5 times in 100, written p &lt; .05. Significant does not mean large or important. It also applies only to the comparison that was tested, a point that matters for Finding 1.
+
+## Finding 1: the verb changed the speed
+
+<ColumnChart
+  title="Experiment 1: average speed estimate for each verb"
+  sub="Miles per hour. 9 students per verb, each estimating the speed in seven films."
+  series={[{ name: 'Average estimate', color: '#1C5A77' }]}
+  groups={[
+    { label: 'contacted', values: [31.8] },
+    { label: 'hit', values: [34.0] },
+    { label: 'bumped', values: [38.1] },
+    { label: 'collided', values: [39.3] },
+    { label: 'smashed', values: [40.8] },
+  ]}
+  max={50}
+  ticks={[0, 10, 20, 30, 40, 50]}
+  unit="mph"
+  source="Source: Loftus and Palmer (1974), Table 1, p. 586."
+  tableCaption="Mean speed estimate by verb, Experiment 1"
+/>
+
+**Students who read *smashed* gave the highest speeds.** Their average was 40.8 miles per hour, about 66 km/h. Students who read *contacted* gave the lowest, 31.8 miles per hour, about 51 km/h. The gap is 9 miles per hour, about 14 km/h, produced by changing one word. The students had all seen the same films.
+
+**The verbs fell roughly in order of violence, with one surprise.** *Collided* and *bumped* came between *smashed* and *hit*. *Hit*, which many people would think of as stronger than *bumped*, produced the second-lowest average. The paper does not comment on this.
+
+**The paper's conclusion:** "the form of a question (in this case, changes in a single word) can markedly and systematically affect a witness's answer to that question" (p. 586).
+
+<Note title="The statistics for Finding 1">
+The paper used an analysis of variance, a test of whether several averages differ more than chance would produce. It treated the verbs as a "fixed effect" and both the students and the films as "random effects", following Clark (1973). Clark had argued that if you want to generalise beyond the particular words or materials you happened to use, you must treat them as a sample in the analysis. Here, that means the result should hold for other accident films, not only these seven. The result was a "quasi F ratio", F'(5,55) = 4.65, p &lt; .005 (p. 586). This test shows that the five averages are not all the same. It does not show which pairs of verbs differ, and the paper reports no tests between pairs. One oddity: the 5 and 55 are <Term>degrees of freedom</Term>, numbers that describe the size of the comparison. With five verbs, an ordinary F test would have 4, not 5, as its first number. Some forms of the quasi F can produce a 5, or it may be a misprint. Either way, the result is significant below .005.
+</Note>
+
+<SourceCheck title="Source check: different from each other?">
+Gross says the mean speed estimates "are significantly different from each other". The paper reports one overall test across the five verbs (p. 586). That test shows that the verb made a difference somewhere among the five. It does not show that every verb differs from every other. *Collided* (39.3) and *smashed* (40.8), for example, are close, and no test between them is reported. Write "the verb had a significant effect on speed estimates", not "each verb produced a significantly different estimate".
+</SourceCheck>
+
+## Finding 2: the students were poor judges of speed
+
+Four of the seven films were staged crashes with known speeds. The paper compares those speeds with the students' estimates (p. 586).
+
+<SpeedCheck />
+
+**The estimates hardly followed the real speeds.** The crash at 20 miles per hour was estimated at 37.7, nearly twice its real speed. One of the crashes at 40 was estimated at 36.1, lower than the 20 mph crash. All four averages fall between 36 and 40, although the real speeds ranged from 20 to 40.
+
+The paper puts the two findings together: "The actual speed of the vehicles controlled little variance in subject reporting, while the phrasing of the question controlled considerable variance" (p. 586). <Term>Variance</Term> here means the differences between answers. In plain words, the wording of the question explained more of the differences between answers than the real speed of the cars did.
+
+## Two explanations for Finding 1
+
+At this point the paper stops to ask why *smashed* produced higher speeds. The diagram sets out its two explanations.
+
+<TwoExplanations />
+
+## Finding 3: the verb changed the speed again in Experiment 2
+
+In Experiment 2, students who read *smashed* estimated an average of 10.46 miles per hour. Students who read *hit* estimated an average of 8.00 miles per hour (p. 587). The difference repeats Finding 1 with new students and a new film.
+
+These speeds are much lower than in Experiment 1. The paper does not give the real speed in this film, so we cannot tell how accurate the estimates were. The low numbers suggest the cars in this film were moving slowly. As the [method page](/cases/car-crash/method/) explains, it was probably a five-car, bumper-to-bumper chain collision. If so, "smashed into each other" overstated what the film showed. That makes the word misleading information, and not only dramatic wording.
+
+<Note title="The statistics for Finding 3">
+The two means were compared with a t test, a test of whether the difference between two averages is bigger than chance would usually produce: t(98) = 2.00, p &lt; .05 (p. 587). The 98 is the degrees of freedom, here the number of students in the two groups minus two. A t of 2.00 is just past the conventional cut-off (two-tailed p of about .048), so this difference is significant but not by a wide margin. From the t value, the standardised difference (Cohen's d) is about 0.4, conventionally a small to medium effect. That calculation is this guide's, not the paper's.
+</Note>
+
+## Finding 4: more "smashed" students remembered broken glass
+
+This is the result Experiment 2 was designed for. A week after the film, students were asked whether they had seen any broken glass. There was none in the film.
+
+<GlassDots />
+
+**About a third of the *smashed* group said yes.** 16 of the 50 students, 32%, reported seeing broken glass that was not there.
+
+**The *hit* group and the control group were almost the same.** 7 of 50 students in the *hit* group (14%) and 6 of 50 in the control group (12%) said yes. So being asked about speed did not, by itself, produce false memories of glass. The rise came only with the word *smashed*.
+
+**A *smashed* student was more than twice as likely to say yes as a *hit* student.** The paper reports the chance of saying "yes" as .32 for *smashed* and .14 for *hit* (p. 587). Notice that most students in every group, including two-thirds of the *smashed* group, correctly said "no".
+
+<Note title="The statistics for Finding 4">
+The paper used a chi-square test of independence, which tests whether the pattern of "yes" and "no" answers differs across the three conditions more than chance would produce: χ²(2) = 7.76, p &lt; .025 (p. 587). Like the test for Finding 1, it is an overall test of the three groups and the paper reports no test between pairs. Calculations by this guide, not the paper: the risk of saying "yes" was 2.3 times higher with *smashed* than with *hit* (.32 divided by .14). The odds ratio, the odds of "yes" in one group divided by the odds in the other, was about 2.9 ((16/34) divided by (7/43)), with a 95% confidence interval from about 1.1 to 7.8. That wide interval shows how uncertain the size of the effect is with 50 students per group. A two-by-two test of *smashed* against *hit* alone gives χ²(1) of about 4.6 (p of about .03), but about .06 with the more cautious Yates correction or Fisher's exact test. *Smashed* against the control group is clearer (p of about .02). So the *smashed* group stands apart from the other two, but the *smashed* versus *hit* difference on its own is borderline, and rests on 16 against 7 students.
+</Note>
+
+<SourceCheck title="Source check: smashed against hit">
+Gross says that "the probability of saying 'yes' to the broken glass question is significantly greater when the verb 'smashed' is used than when 'hit' is used". The paper reports only one test across all three groups (p. 587). It reports no test of *smashed* against *hit* alone, and when this guide ran one, the result was borderline. You can say the verb condition made a significant difference to "yes" answers, and that the *smashed* group gave the most. Do not say the paper showed a significant difference between *smashed* and *hit*.
+</SourceCheck>
+
+## Finding 5: the effect was not only through the speed estimate
+
+There was a simpler possibility. Perhaps *smashed* led to higher speed estimates, and students who had written a higher speed then "remembered" glass, because glass fits a fast crash. In that case, the verb would matter only because it changed the speed estimate. Two students who had written the same speed should be equally likely to say "yes", whichever verb they read.
+
+To check, the paper split students by the speed they had written on Day 1 and compared the two verbs within each band (Table 3, p. 587).
+
+<ColumnChart
+  title="Chance of saying yes to broken glass, by the speed the student had estimated"
+  sub="Percentage saying yes within each band of speed estimates. Experiment 2."
+  series={[{ name: 'smashed', color: '#C8752B' }, { name: 'hit', color: '#2F6FB0' }]}
+  groups={[
+    { label: '1-5 mph', values: [9, 6] },
+    { label: '6-10 mph', values: [27, 9] },
+    { label: '11-15 mph', values: [41, 25] },
+    { label: '16-20 mph', values: [62, 50] },
+  ]}
+  max={70}
+  ticks={[0, 20, 40, 60]}
+  unit="%"
+  source="Source: Loftus and Palmer (1974), Table 3, p. 587, where the values are given as probabilities (.09 and so on). The paper does not say how many students fell in each band."
+  tableCaption="Percentage saying yes to broken glass by speed estimate and verb"
+/>
+
+**Higher speed estimates went with more "yes" answers, in both groups.** Students who had written 16 to 20 miles per hour were the most likely to remember glass. So part of the verb's effect did travel through the speed estimate.
+
+**But at every speed, *smashed* students said yes more often.** Even among students who had written the same speed, those who read *smashed* were more likely to remember glass. The gap was smallest for estimates of 1 to 5 miles per hour (3 percentage points) and largest for 6 to 10 (18 points). The average gap was about 12 points (p. 588). The paper concludes that "the verb *smashed* has other effects besides that of simply increasing the estimate of speed" (p. 588).
+
+<Note title="Reading Table 3 with care">
+The paper does not give the number of students in each speed band. Working backwards from the percentages, the 16 to 20 mph band probably held about 8 *smashed* students and only a handful of *hit* students, so its 62% and 50% rest on very few people. The *smashed* percentages also cannot all be produced by 50 students with 16 "yes" answers, so at least one student's estimate probably fell outside the four bands. These reconstructions are this guide's, not the paper's. The paper reports no significance test for Table 3, and the control group could not appear in it because it gave no speed estimates. The pattern is the same in all four bands, which is the main reason to take it seriously.
+</Note>
+
+## The hypotheses: what happened
+
+| Expectation | Result | Verdict |
+|---|---|---|
+| A more violent verb produces a higher speed estimate (Experiment 1) | *smashed* 40.8 mph, *contacted* 31.8 mph; overall effect of verb significant | Supported, with the order of *hit* and *bumped* a surprise |
+| *smashed* produces higher speed estimates than *hit* (Experiment 2) | 10.46 mph against 8.00 mph; significant | Supported |
+| *smashed* students more often say they saw broken glass a week later (Experiment 2) | 32% against 14% (*hit*) and 12% (control); significant overall | Supported |
+| The verb's effect on glass works only through the speed estimate | At each speed band, *smashed* students said yes more often | Not supported: the verb has a further effect |
+
+## What the paper concludes
+
+The paper reads the results as support for the memory explanation. Its framework, described on the [question page](/cases/car-crash/question/), is that the word *smashed* supplies information after the event, which is then combined with what the student saw. The student ends up with the memory of a more severe accident, and broken glass fits it. The paper says its results "are consistent with the view that the questions asked subsequent to an event can cause a reconstruction in one's memory of that event" (p. 585).
+
+Notice the careful wording: "consistent with". The results fit the memory explanation better than the simple response-bias explanation, but they do not prove that the original memory was replaced. Later research, on the [importance page](/cases/car-crash/importance/), argued about exactly this.
+
+<SourceCheck title="Source check: was the original memory destroyed?">
+Gross writes that, for Loftus, the new information is incorporated into the memory, "updating it and erasing any of the original information", which is "then irretrievably lost". This describes a position Loftus argued for later (for example in Loftus and Loftus, 1980). The 1974 paper claims less. It says the two kinds of information "may be integrated in such a way that we are unable to tell from which source some specific detail is recalled" (p. 588). It does not test whether the original memory survives. When you describe this study, say it showed that a question can change what witnesses later report remembering; do not say it showed the original memory was erased.
+</SourceCheck>
+
+<Try
+  scenario="A newspaper article about this study says: 'Psychologists proved that one word can make witnesses remember things that never happened. Most people who read the word smashed later remembered broken glass.'"
+  question="Correct the article using the figures from Experiment 2, and say what a careful version of the headline claim would be."
+>
+The second sentence is wrong. Only 16 of the 50 *smashed* students, 32%, said they saw broken glass. Two-thirds correctly said no. Some students in the other groups also said yes: 14% in the *hit* group and 12% in the control group, so false "memories" of glass happened even without the word *smashed*. The difference between the groups is what the study shows, not that most people were misled.
+
+"Proved" also goes too far. The study showed that one word in a question raised the rate of a false report from about one in eight to about one in three, in American students watching a short film in a low-stakes setting. That is consistent with the word changing the memory, but other explanations were still open. A careful headline would be: "One word in a question made false reports of broken glass more than twice as common."
+</Try>

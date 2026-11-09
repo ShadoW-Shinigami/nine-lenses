@@ -1,0 +1,43 @@
+---
+// The two explanations the paper gives for Experiment 1 (p. 586), and what each predicts for a later question.
+---
+<figure class="twoexp" aria-label="Two explanations for the speed result and what each predicts">
+  <p class="chart__title">Why did "smashed" produce higher speeds?</p>
+  <p class="chart__sub">The paper offers two explanations (p. 586). Both fit Experiment 1. They make different predictions about what students will say later.</p>
+  <div class="twoexp__grid">
+    <section class="twoexp__card">
+      <p class="twoexp__name">Explanation 1: a push on the answer</p>
+      <ol class="twoexp__chain">
+        <li>The student's memory of the crash stays as it was.</li>
+        <li>Unsure whether to say 30 or 40 mph, the student lets the word "smashed" tip the answer towards the higher number.</li>
+        <li>Only the answer to this one question changes.</li>
+      </ol>
+      <p class="twoexp__pred"><b>Predicts a week later:</b> no special reason to "remember" extra details of a violent crash.</p>
+      <p class="twoexp__term">The paper calls this <b>response bias</b>.</p>
+    </section>
+    <section class="twoexp__card">
+      <p class="twoexp__name">Explanation 2: a change in the memory</p>
+      <ol class="twoexp__chain">
+        <li>The word "smashed" changes how the student remembers the crash.</li>
+        <li>The student now "sees" the accident as more severe than it was.</li>
+        <li>The higher speed comes from this changed memory.</li>
+      </ol>
+      <p class="twoexp__pred"><b>Predicts a week later:</b> more students "remember" details that fit a severe crash but never happened, such as broken glass.</p>
+      <p class="twoexp__term">The paper calls this a change in the <b>memory representation</b>.</p>
+    </section>
+  </div>
+  <p class="twoexp__test">Experiment 2 was designed to tell these apart: it asked about broken glass a week later.</p>
+</figure>
+
+<style>
+  .twoexp { margin: 2rem 0; padding: 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+  .twoexp__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .twoexp__card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 0.8rem 0.9rem; display: flex; flex-direction: column; }
+  .twoexp__name { margin: 0 0 0.5rem; font-weight: 700; color: var(--petrol-deep); }
+  .twoexp__chain { margin: 0 0 0.7rem; padding-left: 1.2rem; font-size: 0.92rem; line-height: 1.45; }
+  .twoexp__chain li { margin: 0 0 0.3rem; }
+  .twoexp__pred { margin: auto 0 0.4rem; padding: 0.5rem 0.65rem; border-left: 3px solid var(--petrol); background: var(--petrol-tint); font-size: 0.9rem; line-height: 1.45; }
+  .twoexp__term { margin: 0; font-size: 0.85rem; color: var(--ink-soft); }
+  .twoexp__test { margin: 0.9rem 0 0; text-align: center; font-weight: 700; font-size: 0.95rem; }
+  @media (max-width: 760px) { .twoexp__grid { grid-template-columns: 1fr; } }
+</style>

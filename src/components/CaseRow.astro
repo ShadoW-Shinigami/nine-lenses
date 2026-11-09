@@ -8,7 +8,7 @@ const d = c.data;
   <a href={url(`cases/${c.id}/`)}>
     {d.image && <img src={url(d.image)} alt="" width="480" height="320" loading="lazy" />}
     <div class="case-row__text">
-      <p class="case-row__meta">{d.year}, {d.theme}. {d.hock} in Hock</p>
+      <p class="case-row__meta">{d.year}, {d.theme}. {d.hock.startsWith('Reading') ? `${d.hock} in Hock` : d.hock}</p>
       <h3>{d.title}</h3>
       <p class="case-row__q">{d.question}</p>
       <p class="case-row__cite">{d.authors}</p>
