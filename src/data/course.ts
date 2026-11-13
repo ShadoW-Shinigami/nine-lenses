@@ -124,7 +124,7 @@ export const STAKEHOLDERS: { id: StakeholderId; name: string; cares: string }[] 
 
 // Philosophy zone: an optional extra section, built only when asked for. One colour for the
 // whole zone keeps it visually distinct from the nine course lenses.
-export type PhilosophyId = 'aristotle' | 'kant' | 'rand' | 'pragmatism' | 'existentialism';
+export type PhilosophyId = 'aristotle' | 'kant' | 'rand' | 'pragmatism' | 'existentialism' | 'knowledge' | 'other-voices';
 
 export interface Philosophy {
   id: PhilosophyId;
@@ -153,6 +153,13 @@ export const PHILOSOPHIES: Philosophy[] = [
   { id: 'existentialism', name: 'Existentialism', people: 'Kierkegaard, Nietzsche, Sartre, Beauvoir, Camus',
     question: 'What is this person doing with their freedom, and what are they fleeing?',
     focus: 'Existence precedes essence. People make themselves through choices, and often flee that freedom into roles, crowds and self-deception.' },
+  // Two optional cross-cutting pages: modern debates in the theory of knowledge, and traditions beyond the main five.
+  { id: 'knowledge', name: 'Knowledge and belief', people: 'Modern epistemology: Quine, Clifford, Nisbett and Wilson, Mele, Cushman, Popper, Kuhn',
+    question: 'Is the new belief justified, and could the person know why it changed?',
+    focus: 'A theory of belief change has to answer to the theory of knowledge: coherence, evidence, self-knowledge and testability.' },
+  { id: 'other-voices', name: 'Other voices', people: 'Socrates, Epictetus, Hume, Spinoza, the Bhagavad Gita, Nyaya, Buddhist and Jain thought',
+    question: 'How have other traditions understood inner conflict and the formation of belief?',
+    focus: 'Inner conflict, doubt and self-deception were studied long before Festinger, in Greece, Rome, Britain and India.' },
 ];
 
 export const philosophyById = (id: string) => PHILOSOPHIES.find((p) => p.id === id);
